@@ -5,6 +5,7 @@
 package project;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -12,17 +13,46 @@ import java.util.ArrayList;
  */
 public class ShiftManager 
 {
+    private Date date = new Date();
+    
     public ShiftManager()
     {
         
     }
     
-    //public void reserveShift(int currentUserID, Shift shift, )
-    //{
+    public void createShift(ArrayList<Shift> availableShifts, Shift shift)
+    {
+        availableShifts.add(shift);
+    }
     
-    //}
+    public void reserveShift(ArrayList<Shift> availableShifts, Nurse currentNurse, Shift shift)
+    {
+        for (Shift availableShift : availableShifts) 
+        {
+            if(availableShift.getShiftID() == shift.getShiftID())
+            {
+                availableShifts.remove(availableShift);
+                currentNurse.reserveShift(shift);
+            }
+        }
+    }
     
-    public void cancelShift(ArrayList<Shift> availableShifts, int shiftID)
+    
+    public void cancelReservation(ArrayList<Shift> availableShifts, Nurse currentNurse, int shiftID)
+    {
+        ArrayList<Shift> nurseSchedule = currentNurse.getNurseSchedule();
+        for (Shift currentShift : nurseSchedule) 
+        {
+            if(currentShift.getShiftID() == shiftID)
+            {
+                availableShifts.add(currentShift);
+                nurseSchedule.remove(currentShift);
+            }
+        }
+    }
+    
+    
+    public void deleteShift(ArrayList<Shift> availableShifts, int shiftID)
     {
         for (Shift availableShift : availableShifts) 
         {
@@ -33,6 +63,15 @@ public class ShiftManager
         }
     }
     
-    
+    public void removeExpired(ArrayList<Shift> availableShifts)
+    {
+        for (Shift availableShift : availableShifts) 
+        {
+            if(availableShift.getShiftDate().getTime() < date.getTime())
+            {
+                availableShifts.remove(availableShift);
+            }
+        }
+    }
     
 }

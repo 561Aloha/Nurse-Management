@@ -5,6 +5,7 @@
 package project;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -17,12 +18,14 @@ public class Shift {
     private int nurseID;
     private Date shiftDate = new Date();
     
-    public Shift(int shiftID, boolean isDay, String hospital)
+    public Shift(int shiftID, boolean isDay, String hospital, Date shiftDate)
     {
         this.shiftID = shiftID;
         this.isDay = isDay;
         this.hospital = hospital;
+        this.shiftDate = shiftDate;
         this.nurseID = 0;
+        
     }
     
     public int getShiftID()
@@ -53,5 +56,22 @@ public class Shift {
     public Date getShiftDate()
     {
         return shiftDate;
+    }
+    
+    @Override
+    public String toString()
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+        String type="";
+        if(isDay==true)
+        {
+            type = "Day";
+        }
+        else
+        {
+            type="Night";
+        }
+        
+        return Integer.toString(getShiftID()) + " " + type + " " + getHospital() + " " + " " + formatter.format(getShiftDate());
     }
 }

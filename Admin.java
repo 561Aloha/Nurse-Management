@@ -8,23 +8,11 @@ package project;
  *
  * @author Romari
  */
-public class Admin {
-    private int adminID;
-    private String password;
+public class Admin extends User{
     
-    public Admin(int adminID, String password)
+    public Admin(int adminID, String name, String password)
     {
-        this.adminID = adminID;
-        this.password = password;
+        super(adminID, name, password);
     }
     
-    public int getAdminID()
-    {
-        return adminID;
-    }
-    
-    public String getPassword()
-    {
-        return password;
-    }
 }

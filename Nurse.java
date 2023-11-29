@@ -10,32 +10,12 @@ import java.util.ArrayList;
  *
  * @author Romari
  */
-public class Nurse {
-    private int nurseID;
-    private String name;
-    private String password;
+public class Nurse extends User{
     private ArrayList<Shift> nurseSchedule;
     
     public Nurse(int nurseID, String name, String password)
     {
-        this.nurseID = nurseID;
-        this.name = name;
-        this.password = password;
-    }
-    
-    public int getNurseID()
-    {
-        return nurseID;
-    }
-    
-    public String getName()
-    {
-        return name;
-    }
-    
-    public String getPassword()
-    {
-        return password;
+        super(nurseID, name, password);
     }
     
     public ArrayList<Shift> getNurseSchedule()
@@ -43,9 +23,9 @@ public class Nurse {
         return nurseSchedule;
     }
     
-    public void changePassword(String password)
+    public void changePassword(String newPassword)
     {
-        this.password = password;
+        this.password = newPassword;
     }
     
     public void reserveShift(Shift shift)
