@@ -13,19 +13,17 @@ import java.awt.event.ActionEvent;
  * @author Romari
  */
 public class ViewManager {
+  
     public ViewManager()
-    {
-        //frames here
-        
-        
-        //attach listener here
+    {   
+ 
     }
     
     public void setVisibility(JFrame frame, boolean bool)
     {
         frame.setVisible(bool);
     }
-    
+   
     public void attachListener(JButton btn, ActionListener listener)
     {
         btn.addActionListener(listener);

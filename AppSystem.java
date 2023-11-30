@@ -20,10 +20,16 @@ public class AppSystem {
     private int currentUserID;
     private Date currentDate = new Date();
     
+    //make accessors
+    Sort sort = new Sort();
+    Filter filter = new Filter();
+    
     public AppSystem()
     {
        systemAdmin = new Admin(1000, "admin", "admin");
-       testNurse = new Nurse(1001,"Test Nurse", "test");
+       testNurse = new Nurse(1001,"Test", "test");
+       
+       nurses.add(testNurse);
        
        //availableShifts.add(new Shift(2000,true,"Hospital A", new Date(40, 9, 19)));
        //hospitals.add("Hospital A");
@@ -59,7 +65,7 @@ public class AppSystem {
         return availableShifts;
     }
     
-    public void verifyLogin(int ID, String password)
+    public boolean verifyLogin(int ID, String password)
     {
         if (ID == systemAdmin.getID())
         {
@@ -67,7 +73,7 @@ public class AppSystem {
             {
                 setCurrentID(ID);
                 System.out.println("Admin Login successful");
-                //return;
+                return true;
             }
         }
         else
@@ -76,12 +82,17 @@ public class AppSystem {
             {
                 if(ID == nurse.getID())
                 {
-                    setCurrentID(ID);
-                    System.out.println("Nurse Login successful");
-                    //return;
+                    if(password.equals(nurse.getPassword()))
+                    {
+                        setCurrentID(ID);
+                        System.out.println("Nurse Login successful");
+                        return true;
+                    }
+                    
                 }
             }
         }
+        return false;
     }
     
     public void verifyOldPass(String oldPassword, String newPassword)

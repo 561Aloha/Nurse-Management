@@ -6,6 +6,8 @@ package project;
 
 import java.util.Date;
 import java.util.ArrayList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -19,6 +21,8 @@ public class NurseApp {
         ShiftManager shiftmanager = new ShiftManager();
         Sort sort = new Sort();
         Filter filter = new Filter();
+        LoginFrame loginframe = new LoginFrame();
+        nDashboard ndashboard = new nDashboard();
         
         Shift shift1 = new Shift(2000,true,"Hospital A", new Date(120, 10, 15));
         Shift shift2 = new Shift(2000,false,"Hospital B", new Date(123, 1, 11));
@@ -122,5 +126,29 @@ public class NurseApp {
         {
             System.out.println(shift.toString());
         }
+        
+        
+        //testing action listener
+        viewmanager.attachListener(loginframe.getBtn(), 
+                new 
+            ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    
+                    String id = loginframe.getJtxtField().getText();
+                    String password = loginframe.getPassField().getText();
+                    
+                    if (appsys.verifyLogin(Integer.parseInt(id), password)==true)
+                    {
+                        viewmanager.setVisibility(ndashboard.getFrame(), true);
+                        viewmanager.setVisibility(loginframe.getFrame(), false);
+                    }
+                    
+                    
+                }
+            });
+        
     }
 }
