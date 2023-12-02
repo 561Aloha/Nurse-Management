@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import javax.swing.*;
 /**
  * @dianna
- */// used to be JFrame not JPanel
-public class FilterFrame extends JPanel {
+ *
 
-    public ArrayList<Shift> shifts; // Assuming you have a list of shifts
+public class FilterFrame extends JPanel {
+    public ArrayList<Shift> shifts; 
 
     FilterFrame(ArrayList<Shift> shifts) {
         this.shifts = shifts;
