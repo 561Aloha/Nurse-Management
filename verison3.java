@@ -4,67 +4,94 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class verison2 {
+/** Hi there
+ *
+ * @helloworld
+*/
+
+public class verison3 {
+
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("Welcome");
+
+        /* This below to the headerPanel creates the HEADER */
+
         JLabel heading = new JLabel("eNurse");
         heading.setFont(new Font("Poppins", Font.BOLD, 20));
         JLabel subheading = new JLabel("Nurse Dashboard");
         subheading.setFont(new Font("Poppins", Font.ITALIC, 10));
-        JButton button1 = new JButton("View Shifts");
-        JButton button2 = new JButton("View Profile");
+        JButton button1 = new JButton("Home");
+        JButton button2 = new JButton("Change Password");
         JButton button3 = new JButton("Logout");
-  
 
         // Creating a panel with BoxLayout for left labels
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.add(heading);
         leftPanel.add(subheading);
- 
+
         // Creating a subpanel for horizontal buttons on the right
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(button1);
-        buttonPanel.add(button2);
-        buttonPanel.add(button3);
-
-
-
-        // Second Layer
-        JPanel meepPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton button10 = new JButton("FILTER");
-        meepPanel.add(button10);
-
-        JPanel meepPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel subheading2 = new JLabel("Shifts Reserved");
-        meepPanel2.add(subheading2);
-    
-       
-        // Creating a panel for the entire content with BorderLayout
-        JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.add(leftPanel, BorderLayout.WEST);
-        contentPanel.add(buttonPanel, BorderLayout.EAST);
-        contentPanel.add(new JSeparator(), BorderLayout.SOUTH); // Horizontal Line
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightPanel.add(button1);
+        rightPanel.add(button2);
+        rightPanel.add(button3);
 
         // Set layout manager for the frame
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
-        // Add the content panel to the frame
-        frame.add(contentPanel);
-        frame.add(meepPanel);
-        frame.add(meepPanel2);
-        // sets the frame visibility to true
-        frame.setVisible(true);
+        // Creating a panel for the entire content with BorderLayout
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.add(leftPanel, BorderLayout.WEST);
+        headerPanel.add(rightPanel, BorderLayout.EAST);
+        headerPanel.add(new JSeparator(), BorderLayout.SOUTH); // Horizontal Line
+        
 
+
+        // Add the content panel to the frame
+        frame.add(headerPanel);
+
+
+            // Second Layer
+        JPanel meepPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout.CENTER for center alignment
+
+        JLabel subheading2 = new JLabel("Welcome");
+        subheading2.setFont(new Font("Poppins", Font.ITALIC, 30));
+        meepPanel.add(subheading2);
+        JButton button10 = new JButton("SORT");
+        meepPanel.add(button10);
+
+
+        // Set layout manager for the frame
+        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+        frame.add(meepPanel);
+        frame.setVisible(true);
         // This method sets the width and height of the frame
         frame.setSize(1000, 800); // Adjust the size as needed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+
         // Creating a Schedule instance
-        Schedule schedule = new verison2().new Schedule();
+        Schedule schedule = new verison3().new Schedule();
         schedule.createScheduleFrame(frame.getContentPane());
+
+        Filter filter = new Filter();
+        ArrayList<Shift> shifts = new ArrayList<>(); // Your list of shifts
+        shifts = filter.filterShiftsByHospital(shifts, 1); // Example filtering
+
+        // Create an instance of FilterD with a list of shifts
+        FilterD filterD = new FilterD(shifts);
+        meepPanel.add(filterD);
+
+        frame.setSize(1000, 800); // Adjust the size as needed
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
+
+
+     /** Hi there
+     * @this is new. Class Filter D is from another file
+    */
 
     private static class DetailItem {
         private String date;
@@ -105,7 +132,6 @@ public class verison2 {
             dataList.add(new DetailItem("2023-01-03", "08:45 AM - 3:00PM", "Medical Center"));
             dataList.add(new DetailItem("2023-01-04", "09:15 AM - 4:00PM", "Community Hospital"));
 
-
             // Create a DefaultListModel to hold the data
             DefaultListModel<DetailItem> listModel = new DefaultListModel<>();
 
@@ -136,14 +162,18 @@ public class verison2 {
 
             // Create a panel to hold the JList and the Remove Shift button
             JPanel mainPanel = new JPanel(new BorderLayout());
+
             mainPanel.add(scrollPane, BorderLayout.NORTH); // Place JList at the top
             mainPanel.add(new JSeparator(), BorderLayout.CENTER); // Separator in the middle
             mainPanel.add(removeButton, BorderLayout.SOUTH); // Remove button on the bottom of th 
             container.add(mainPanel);
+            
+
 
         }
 
         private class MiniGrid extends DefaultListCellRenderer {
+    
 
             private static final int CELL_PADDING = 5; 
             private static final int BORDER_THICKNESS = 1; 
@@ -180,4 +210,5 @@ public class verison2 {
             }
         }
     }
+
 }
