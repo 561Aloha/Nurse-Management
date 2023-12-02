@@ -11,46 +11,36 @@ import java.awt.*;
  *
  * @author Romari
  */
-public class LoginFrame {
+public class ChangePasswordFrame {
     private JFrame frame = new JFrame("Welcome");  
-    private JButton loginBtn = new JButton("Login"); 
-    private JTextField name = new JTextField(10);
-    private JPasswordField password = new JPasswordField(10);
+    private JButton submitChangeBtn = new JButton("Submit Change"); 
+    private JPasswordField oldpassword = new JPasswordField(10);
+    private JPasswordField newpassword = new JPasswordField(10);
     
-    
-    public LoginFrame()
+    public ChangePasswordFrame()
     {
-        //Creating instance of JFrame
-     
         //Creating JLabel
-        JLabel l1 = new JLabel("ID");
-        JLabel l2 = new JLabel("Password");
+        JLabel l1 = new JLabel("Old Password");
+        JLabel l2 = new JLabel("New Password");
 
         //Creating JTextField
         ////JTextField name = new JTextField(10);
-        l1.setLabelFor(name);
+        l1.setLabelFor(oldpassword);
 
         //Creating JPasswordField
         /////JPasswordField password = new JPasswordField(10);
-        l2.setLabelFor(password);
+        l2.setLabelFor(newpassword);
+        
         // Creating JLabel for the heading
-        JLabel heading = new JLabel("Welcome to eNurse");
+        JLabel heading = new JLabel("Change Your Password");
         heading.setFont(new Font("Poppins", Font.BOLD, 20));
-        heading.setBounds(100, 50, 300, 30);
-
-        JLabel subheading = new JLabel("please sign in");
-        subheading.setFont(new Font("Poppins", Font.ITALIC, 10));
-        subheading.setBounds(100, 70, 300, 30);
-
-        // CREATING THE BUTTONS
-        //JPanel buttonPanel = new JPanel();
-           //buttonPanel.setLayout(new FlowLayout());
+        heading.setBounds(75, 50, 300, 30);
 
         // Creating JButton
         /////JButton loginBtn = new JButton("Login");
-        loginBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
-        loginBtn.setBounds(100, 200, 100, 30);
-        frame.add(loginBtn);
+        submitChangeBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
+        submitChangeBtn.setBounds(75, 200, 100, 30);
+        frame.add(submitChangeBtn);
 
 
 
@@ -61,31 +51,31 @@ public class LoginFrame {
          * corner and remaining two parameters are the width
          * and height of the specific component.
          */
-        l1.setBounds(100, 100, 50, 30);
-        name.setBounds(200,100,150,30);
+        l1.setBounds(50, 100, 150, 30);
+        oldpassword.setBounds(175,100,150,30);
 
-        l2.setBounds(100, 150, 125, 30);
-        password.setBounds(200,150,150,30);
+        l2.setBounds(50, 150, 150, 30);
+        newpassword.setBounds(175,150,150,30);
 
 
         /* changing appearance of the label
          * Font,text color,background color
          */
         l1.setFont(new Font("Poppins", Font.BOLD, 15));
-        name.setFont(new Font("Poppins", Font.ITALIC, 15));
+        oldpassword.setFont(new Font("Poppins", Font.ITALIC, 15));
 
         l2.setFont(new Font("Poppins", Font.BOLD, 15));
-        name.setFont(new Font("Poppins", Font.ITALIC, 15));
+        newpassword.setFont(new Font("Poppins", Font.ITALIC, 15));
 
 
 
         //adds the labels to the frame
         frame.add(l1);
-        frame.add(name);
+        frame.add(oldpassword);
         frame.add(l2);
-        frame.add(password);
+        frame.add(newpassword);
         frame.add(heading);   
-        frame.add(subheading);
+        
 
         /* layout set to null ->
          * as no layout managers used
@@ -93,29 +83,27 @@ public class LoginFrame {
          */
         frame.setLayout(null);
 
-        //sets the frame visibility to true
-        frame.setVisible(true);
-
         //This method sets the width and height of the frame
         frame.setSize(400, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
+
+        
     public JButton getBtn()
     {
-        return loginBtn;
+        return submitChangeBtn;
     }
-    
-    public JTextField getJtxtField()
+
+    public JPasswordField getOldPassword()
     {
-        return name;
+        return oldpassword;
     }
-    
-    public JPasswordField getPassField()
+
+    public JPasswordField getNewPassword()
     {
-        return password;
+        return newpassword;
     }
-    
+
     public JFrame getFrame()
     {
         return frame;

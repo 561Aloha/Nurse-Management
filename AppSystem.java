@@ -26,6 +26,7 @@ public class AppSystem {
     
     public AppSystem()
     {
+       currentUserID = 0 ;
        systemAdmin = new Admin(1000, "admin", "admin");
        testNurse = new Nurse(1001,"Test", "test");
        
@@ -65,6 +66,11 @@ public class AppSystem {
         return availableShifts;
     }
     
+    public int getAdminID()
+    {
+        return systemAdmin.getID();
+    }
+    
     public boolean verifyLogin(int ID, String password)
     {
         if (ID == systemAdmin.getID())
@@ -95,19 +101,20 @@ public class AppSystem {
         return false;
     }
     
-    public void verifyOldPass(String oldPassword, String newPassword)
+    public boolean verifyOldPass(String oldPassword, String newPassword)
     {
         for(Nurse nurse: nurses)
+        {
+            if(currentUserID == nurse.getID())
             {
-                if(currentUserID == nurse.getID())
+                if (oldPassword.equals(nurse.getPassword()))
                 {
-                    if (oldPassword.equals(nurse.getPassword()))
-                    {
-                        nurse.changePassword(newPassword);
-                    }
-                    //return;
+                    nurse.changePassword(newPassword);
+                    return true;
                 }
             }
+        }
+        return false;
     }
     
     public void addNurse(int nurseID, String name, String password)

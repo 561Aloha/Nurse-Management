@@ -21,8 +21,18 @@ public class NurseApp {
         ShiftManager shiftmanager = new ShiftManager();
         Sort sort = new Sort();
         Filter filter = new Filter();
+        
+        //frames
         LoginFrame loginframe = new LoginFrame();
-        nDashboard ndashboard = new nDashboard();
+        NDashboardFrame ndashboard = new NDashboardFrame();
+        ADashboardFrame adashboard = new ADashboardFrame();
+        NShiftsFrame nshiftsframe = new NShiftsFrame();
+        AShiftsFrame ashiftsframe = new AShiftsFrame();
+        ScheduleFrame scheduleframe = new ScheduleFrame();
+        ChangePasswordFrame changepasswordframe = new ChangePasswordFrame();
+        NursesFrame nursesframe = new NursesFrame();
+        ShiftCreationFrame shiftcreationframe = new ShiftCreationFrame();
+        AddNurseFrame addnurseframe = new AddNurseFrame();
         
         Shift shift1 = new Shift(2000,true,"Hospital A", new Date(120, 10, 15));
         Shift shift2 = new Shift(2000,false,"Hospital B", new Date(123, 1, 11));
@@ -127,28 +137,212 @@ public class NurseApp {
             System.out.println(shift.toString());
         }
         
-        
-        //testing action listener
+        ///////////////////////////////login frame///////////////////////////////
+        //login button action listener
         viewmanager.attachListener(loginframe.getBtn(), 
-                new 
-            ActionListener()
+            new ActionListener()
             {
                 @Override
                 public void actionPerformed(ActionEvent event)
                 {
-                    
                     String id = loginframe.getJtxtField().getText();
                     String password = loginframe.getPassField().getText();
-                    
+                
                     if (appsys.verifyLogin(Integer.parseInt(id), password)==true)
                     {
-                        viewmanager.setVisibility(ndashboard.getFrame(), true);
+                        
                         viewmanager.setVisibility(loginframe.getFrame(), false);
-                    }
-                    
-                    
+                        
+                        if(Integer.parseInt(id) == appsys.getAdminID())
+                        {
+                            viewmanager.setVisibility(adashboard.getFrame(), true);
+                        }
+                        else
+                        {
+                            viewmanager.setVisibility(ndashboard.getFrame(), true);
+                        }
+                        
+                        loginframe.getJtxtField().setText("");
+                        loginframe.getPassField().setText("");
+                    }       
                 }
-            });
+            }
+        );
         
+        
+        ///////////////////////////////nurse dashboard frame///////////////////////////////
+        //logout button action listener
+        viewmanager.attachListener(ndashboard.getLogoutBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(ndashboard.getFrame(), false);
+                    viewmanager.setVisibility(loginframe.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //change password button action listener
+        viewmanager.attachListener(ndashboard.getChangePassBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(ndashboard.getFrame(), false);
+                    viewmanager.setVisibility(changepasswordframe.getFrame(), true);                         
+                }
+            }
+        );
+        
+        
+        ///////////////////////////////change password frame///////////////////////////////
+        //submit change button action listener
+        viewmanager.attachListener(changepasswordframe.getBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    String oldPassword = changepasswordframe.getOldPassword().getText();
+                    String newPassword = changepasswordframe.getNewPassword().getText();
+                
+                    if (appsys.verifyOldPass(oldPassword, newPassword)==true)
+                    {
+                        viewmanager.setVisibility(ndashboard.getFrame(), true);
+                        viewmanager.setVisibility(changepasswordframe.getFrame(), false);
+                        changepasswordframe.getOldPassword().setText("");
+                        changepasswordframe.getNewPassword().setText("");
+                    }       
+                }
+            }
+        );
+        
+        
+        ///////////////////////////////add nurse frame///////////////////////////////
+        //add nurse button action listener
+        viewmanager.attachListener(addnurseframe.getBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    String id = addnurseframe.getID().getText();
+                    String name = addnurseframe.getName().getText();
+                    String password = addnurseframe.getPassword().getText();
+                    appsys.addNurse(Integer.parseInt(id), name, password);
+                    viewmanager.setVisibility(addnurseframe.getFrame(), false);
+                    viewmanager.setVisibility(adashboard.getFrame(), true);                         
+                }
+            }
+        );
+        
+        
+        ///////////////////////////////admin dashboard frame///////////////////////////////
+        //logout button action listener
+        viewmanager.attachListener(adashboard.getLogoutBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(adashboard.getFrame(), false);
+                    viewmanager.setVisibility(loginframe.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //add nurse button action listener
+        viewmanager.attachListener(adashboard.getAddNurseBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(adashboard.getFrame(), false);
+                    viewmanager.setVisibility(addnurseframe.getFrame(), true);
+                         
+                }
+            }
+        );
+        
+        //view shifts button action listener
+         viewmanager.attachListener(adashboard.getViewShiftsBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(adashboard.getFrame(), false);
+                    viewmanager.setVisibility(ashiftsframe.getFrame(), true);
+                         
+                }
+            }
+        );
+         
+        //view nurses button action listener
+        viewmanager.attachListener(adashboard.getNursesBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(adashboard.getFrame(), false);
+                    viewmanager.setVisibility(nursesframe.getFrame(), true);
+                         
+                }
+            }
+        );
+        
+        //create new shift button action listener
+        viewmanager.attachListener(adashboard.getCreateShiftBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(adashboard.getFrame(), false);
+                    viewmanager.setVisibility(shiftcreationframe.getFrame(), true);
+                         
+                }
+            }
+        );
+        
+        
+        ///////////////////////////////admin nurses frame///////////////////////////////
+        //logout button action listener
+        viewmanager.attachListener(nursesframe.getLogoutBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(nursesframe.getFrame(), false);
+                    viewmanager.setVisibility(loginframe.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //home button action listener
+        viewmanager.attachListener(nursesframe.getHomeBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(nursesframe.getFrame(), false);
+                    viewmanager.setVisibility(adashboard.getFrame(), true);
+                         
+                }
+            }
+        );
     }
 }

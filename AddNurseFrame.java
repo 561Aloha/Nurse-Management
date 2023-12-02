@@ -11,46 +11,40 @@ import java.awt.*;
  *
  * @author Romari
  */
-public class LoginFrame {
+public class AddNurseFrame {
     private JFrame frame = new JFrame("Welcome");  
-    private JButton loginBtn = new JButton("Login"); 
+    private JButton addNurseBtn = new JButton("Add Nurse"); 
+    private JTextField id = new JTextField(10);
     private JTextField name = new JTextField(10);
     private JPasswordField password = new JPasswordField(10);
     
-    
-    public LoginFrame()
+    public AddNurseFrame()
     {
-        //Creating instance of JFrame
-     
         //Creating JLabel
         JLabel l1 = new JLabel("ID");
-        JLabel l2 = new JLabel("Password");
+        JLabel l2 = new JLabel("Name");
+        JLabel l3 = new JLabel("Password");
 
         //Creating JTextField
         ////JTextField name = new JTextField(10);
-        l1.setLabelFor(name);
-
+        l1.setLabelFor(id);
+        
+        l2.setLabelFor(name);
+        
         //Creating JPasswordField
         /////JPasswordField password = new JPasswordField(10);
-        l2.setLabelFor(password);
+        l3.setLabelFor(password);
+        
         // Creating JLabel for the heading
-        JLabel heading = new JLabel("Welcome to eNurse");
+        JLabel heading = new JLabel("Add New Nurse");
         heading.setFont(new Font("Poppins", Font.BOLD, 20));
-        heading.setBounds(100, 50, 300, 30);
-
-        JLabel subheading = new JLabel("please sign in");
-        subheading.setFont(new Font("Poppins", Font.ITALIC, 10));
-        subheading.setBounds(100, 70, 300, 30);
-
-        // CREATING THE BUTTONS
-        //JPanel buttonPanel = new JPanel();
-           //buttonPanel.setLayout(new FlowLayout());
+        heading.setBounds(75, 50, 300, 30);
 
         // Creating JButton
         /////JButton loginBtn = new JButton("Login");
-        loginBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
-        loginBtn.setBounds(100, 200, 100, 30);
-        frame.add(loginBtn);
+        addNurseBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
+        addNurseBtn.setBounds(50, 250, 100, 30);
+        frame.add(addNurseBtn);
 
 
 
@@ -61,40 +55,47 @@ public class LoginFrame {
          * corner and remaining two parameters are the width
          * and height of the specific component.
          */
-        l1.setBounds(100, 100, 50, 30);
-        name.setBounds(200,100,150,30);
+        l1.setBounds(50, 100, 150, 30);
+        id.setBounds(175,100,150,30);
 
-        l2.setBounds(100, 150, 125, 30);
-        password.setBounds(200,150,150,30);
+        l2.setBounds(50, 150, 150, 30);
+        name.setBounds(175,150,150,30);
+        
+        l3.setBounds(50, 200, 150, 30);
+        password.setBounds(175,200,150,30);
 
 
         /* changing appearance of the label
          * Font,text color,background color
          */
         l1.setFont(new Font("Poppins", Font.BOLD, 15));
-        name.setFont(new Font("Poppins", Font.ITALIC, 15));
-
+        id.setFont(new Font("Poppins", Font.ITALIC, 15));
+        
         l2.setFont(new Font("Poppins", Font.BOLD, 15));
         name.setFont(new Font("Poppins", Font.ITALIC, 15));
+
+        l3.setFont(new Font("Poppins", Font.BOLD, 15));
+        password.setFont(new Font("Poppins", Font.ITALIC, 15));
 
 
 
         //adds the labels to the frame
         frame.add(l1);
-        frame.add(name);
+        frame.add(id);
         frame.add(l2);
+        frame.add(name);
+        frame.add(l3);
         frame.add(password);
         frame.add(heading);   
-        frame.add(subheading);
+        
 
         /* layout set to null ->
          * as no layout managers used
          * in this example (like FlowLayout,BoxLayout.etc)
          */
         frame.setLayout(null);
-
-        //sets the frame visibility to true
-        frame.setVisible(true);
+        
+        //frame.setVisible(true);
 
         //This method sets the width and height of the frame
         frame.setSize(400, 500);
@@ -103,19 +104,24 @@ public class LoginFrame {
     
     public JButton getBtn()
     {
-        return loginBtn;
+        return addNurseBtn;
+    }
+
+    public JTextField getID()
+    {
+        return id;
     }
     
-    public JTextField getJtxtField()
+    public JTextField getName()
     {
         return name;
     }
     
-    public JPasswordField getPassField()
+    public JPasswordField getPassword()
     {
         return password;
     }
-    
+
     public JFrame getFrame()
     {
         return frame;
