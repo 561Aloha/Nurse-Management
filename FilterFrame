@@ -1,0 +1,110 @@
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.swing.*;
+/**
+ * @dianna
+ */// used to be JFrame not JPanel
+public class FilterFrame extends JPanel {
+
+    public ArrayList<Shift> shifts; // Assuming you have a list of shifts
+
+    FilterFrame(ArrayList<Shift> shifts) {
+        this.shifts = shifts;
+        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+
+        JRadioButton ABtn = new JRadioButton("Hospital A");
+        JRadioButton BBtn = new JRadioButton("Hospital B");
+        JRadioButton CBtn = new JRadioButton("Hospital C");
+        JRadioButton DBtn = new JRadioButton("Hospital D");
+
+        JRadioButton dayBtn = new JRadioButton("Day");
+        JRadioButton nightBtn = new JRadioButton("Night");
+
+        // Add radio buttons to a ButtonGroup to ensure only one can be selected
+        ButtonGroup hospitalGroup = new ButtonGroup();
+        ButtonGroup typeGroup = new ButtonGroup();
+
+        hospitalGroup.add(ABtn);
+        hospitalGroup.add(BBtn);
+        hospitalGroup.add(CBtn);
+        hospitalGroup.add(DBtn);
+
+        typeGroup.add(dayBtn);
+        typeGroup.add(nightBtn);
+
+        this.add(ABtn);
+        this.add(BBtn);
+        this.add(CBtn);
+        this.add(DBtn);
+        this.add(dayBtn);
+        this.add(nightBtn);
+
+        // Add ActionListener to radio buttons
+        ABtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterShiftsByHospital(1);
+            }
+        });
+
+        BBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterShiftsByHospital(2);
+            }
+        });
+
+        CBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterShiftsByHospital(3);
+            }
+        });
+
+        DBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterShiftsByHospital(4);
+            }
+        });
+
+        dayBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterShiftsByType(1);
+            }
+        });
+
+        nightBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterShiftsByType(0);
+            }
+        });
+
+        //this.pack();
+        this.setVisible(true);
+    }
+
+    private void filterShiftsByHospital(int hospital) {
+        Filter filter = new Filter();
+        ArrayList<Shift> filteredShifts = filter.filterShiftsByHospital(shifts, hospital);
+        // Update UI or perform any other action with filteredShifts
+        System.out.println("Filtered shifts by hospital: " + filteredShifts);
+    }
+
+    private void filterShiftsByType(int type) {
+        Filter filter = new Filter();
+        ArrayList<Shift> filteredShifts = filter.filterShiftsByType(shifts, type);
+        // Update UI or perform any other action with filteredShifts
+        System.out.println("Filtered shifts by type: " + filteredShifts);
+    }
+
+    public static void main(String[] args) {
+        // Create an instance of FilterD with a list of shifts
+        ArrayList<Shift> shifts = new ArrayList<>(); // Provide your list of shifts
+        new FilterFrame(shifts);
+    }
+}
