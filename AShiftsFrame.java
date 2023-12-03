@@ -82,4 +82,14 @@ public class AShiftsFrame {
     {
         return frame;
     }
+    
+    public JButton getLogoutBtn()
+    {
+        return logoutBtn;
+    }
+    
+    public JButton getHomeBtn()
+    {
+        return homeBtn;
+    }
 }

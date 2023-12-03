@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+
 /**
  *
  * @author Romari
@@ -199,10 +200,39 @@ public class NurseApp {
             }
         );
         
+        //view shifts button action listener
+         viewmanager.attachListener(ndashboard.getViewShiftsBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(ndashboard.getFrame(), false);
+                    viewmanager.setVisibility(nshiftsframe.getFrame(), true);
+                         
+                }
+            }
+        );
+         
+        //view schedule button action listener
+        viewmanager.attachListener(ndashboard.getViewSchedBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(ndashboard.getFrame(), false);
+                    viewmanager.setVisibility(scheduleframe.getFrame(), true);
+                         
+                }
+            }
+        );
+        
+        
         
         ///////////////////////////////change password frame///////////////////////////////
         //submit change button action listener
-        viewmanager.attachListener(changepasswordframe.getBtn(), 
+        viewmanager.attachListener(changepasswordframe.getSubmitChangeBtn(), 
             new ActionListener()
             {
                 @Override
@@ -222,6 +252,21 @@ public class NurseApp {
             }
         );
         
+        //go back button action listener
+        viewmanager.attachListener(changepasswordframe.getNoChangesBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(changepasswordframe.getFrame(), false);
+                    viewmanager.setVisibility(ndashboard.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
         
         ///////////////////////////////add nurse frame///////////////////////////////
         //add nurse button action listener
@@ -237,6 +282,21 @@ public class NurseApp {
                     appsys.addNurse(Integer.parseInt(id), name, password);
                     viewmanager.setVisibility(addnurseframe.getFrame(), false);
                     viewmanager.setVisibility(adashboard.getFrame(), true);                         
+                }
+            }
+        );
+        
+        //go back button action listener
+        viewmanager.attachListener(addnurseframe.getNoChangesBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(addnurseframe.getFrame(), false);
+                    viewmanager.setVisibility(adashboard.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
                 }
             }
         );
@@ -315,7 +375,7 @@ public class NurseApp {
         );
         
         
-        ///////////////////////////////admin nurses frame///////////////////////////////
+        ///////////////////////////////nurses frame (admin)///////////////////////////////
         //logout button action listener
         viewmanager.attachListener(nursesframe.getLogoutBtn(), 
             new ActionListener()
@@ -344,5 +404,155 @@ public class NurseApp {
                 }
             }
         );
+        
+        
+        ///////////////////////////////shifts frame (nurse)///////////////////////////////
+        //logout button action listener
+        viewmanager.attachListener(nshiftsframe.getLogoutBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(nshiftsframe.getFrame(), false);
+                    viewmanager.setVisibility(loginframe.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //home button action listener
+        viewmanager.attachListener(nshiftsframe.getHomeBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(nshiftsframe.getFrame(), false);
+                    viewmanager.setVisibility(ndashboard.getFrame(), true);
+                         
+                }
+            }
+        );
+        
+        
+        
+        ///////////////////////////////shifts frame (admin)///////////////////////////////
+        //logout button action listener
+        viewmanager.attachListener(ashiftsframe.getLogoutBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(ashiftsframe.getFrame(), false);
+                    viewmanager.setVisibility(loginframe.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //home button action listener
+        viewmanager.attachListener(ashiftsframe.getHomeBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(ashiftsframe.getFrame(), false);
+                    viewmanager.setVisibility(adashboard.getFrame(), true);
+                         
+                }
+            }
+        );
+        
+        
+        
+        ///////////////////////////////schedule frame (nurse)///////////////////////////////
+        //logout button action listener
+        viewmanager.attachListener(scheduleframe.getLogoutBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(scheduleframe.getFrame(), false);
+                    viewmanager.setVisibility(loginframe.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //home button action listener
+        viewmanager.attachListener(scheduleframe.getHomeBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(scheduleframe.getFrame(), false);
+                    viewmanager.setVisibility(ndashboard.getFrame(), true);
+                         
+                }
+            }
+        );
+        
+        
+        ///////////////////////////////shift creation frame (admin)///////////////////////////////
+        //go back button action listener
+        viewmanager.attachListener(shiftcreationframe.getNoChangesBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(shiftcreationframe.getFrame(), false);
+                    viewmanager.setVisibility(adashboard.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //create shift button action listener
+        viewmanager.attachListener(shiftcreationframe.getCreateShiftBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    
+                    Integer id = Integer.valueOf(shiftcreationframe.getID().getText());
+                    
+                    boolean isday = true;
+                    String type = shiftcreationframe.getType().getText().toLowerCase();
+                    if(type.equals("night"))
+                    {
+                        isday = false;
+                    }
+                    
+                    String hospital = shiftcreationframe.getHospital().getText().toLowerCase();
+                    
+                    Integer dateD = Integer.valueOf(shiftcreationframe.getDateD().getText());
+                    Integer dateM = Integer.valueOf(shiftcreationframe.getDateD().getText());
+                    Integer dateY = Integer.valueOf(shiftcreationframe.getDateD().getText());
+                    Date date = new Date(dateY-1900,dateM,dateD);
+                    
+                    
+                    
+                    shiftmanager.createShift(appsys.getAvailableShifts(), new Shift(id,isday,hospital,date));
+                    
+                    viewmanager.setVisibility(shiftcreationframe.getFrame(), false);
+                    viewmanager.setVisibility(adashboard.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        
     }
 }

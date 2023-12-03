@@ -14,11 +14,15 @@ import java.awt.*;
  */
 public class ShiftCreationFrame {
     private JFrame frame = new JFrame("Welcome");  
+    
+    private JButton noChangesBtn = new JButton("Go Back/No Changes");
     private JButton createShiftBtn = new JButton("Create Shift"); 
     private JTextField id = new JTextField(10);
     private JTextField type = new JTextField(10);
     private JTextField hospital = new JTextField(10);
-    private JTextField date = new JTextField(10);
+    private JTextField dateD = new JTextField(3);
+    private JTextField dateM = new JTextField(3);
+    private JTextField dateY = new JTextField(3);
     
     public ShiftCreationFrame()
     {
@@ -35,7 +39,7 @@ public class ShiftCreationFrame {
         
         l3.setLabelFor(hospital);
         
-        l4.setLabelFor(date);
+        l4.setLabelFor(dateD);
         
         // Creating JLabel for the heading
         JLabel heading = new JLabel("Create New Shift");
@@ -45,8 +49,12 @@ public class ShiftCreationFrame {
         // Creating JButton
         /////JButton loginBtn = new JButton("Login");
         createShiftBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
-        createShiftBtn.setBounds(50, 300, 100, 30);
+        createShiftBtn.setBounds(50, 325, 200, 30);
         frame.add(createShiftBtn);
+        
+        noChangesBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
+        noChangesBtn.setBounds(50, 375, 200, 30);
+        frame.add(noChangesBtn);
 
         
 
@@ -57,19 +65,34 @@ public class ShiftCreationFrame {
          * corner and remaining two parameters are the width
          * and height of the specific component.
          */
-        l1.setBounds(50, 100, 150, 30);
-        id.setBounds(175,100,150,30);
+        l1.setBounds(50, 100, 100, 30);
+        id.setBounds(175,100,170,30);
 
-        l2.setBounds(50, 150, 150, 30);
-        type.setBounds(175,150,150,30);
+        l2.setBounds(50, 150, 100, 30);
+        type.setBounds(175,150,170,30);
         
-        l3.setBounds(50, 200, 150, 30);
-        hospital.setBounds(175,200,150,30);
+        l3.setBounds(50, 200, 100, 30);
+        hospital.setBounds(175,200,170,30);
         
-        l4.setBounds(50, 250, 150, 30);
-        date.setBounds(175,250,150,30);
-
-
+        l4.setBounds(50, 250, 100, 30);
+        dateD.setBounds(175,250,30,30);
+        dateM.setBounds(235,250,30,30);
+        dateY.setBounds(295,250,50,30);
+        
+        JLabel dateLabelD = new JLabel("DD");
+        dateLabelD.setFont(new Font("Poppins", Font.ITALIC, 10));
+        dateLabelD.setBounds(180, 275, 30, 30);
+        
+        JLabel dateLabelM = new JLabel("MM");
+        dateLabelM.setFont(new Font("Poppins", Font.ITALIC, 10));
+        dateLabelM.setBounds(240, 275, 30, 30);
+        
+        JLabel dateLabelY = new JLabel("YYYY");
+        dateLabelY.setFont(new Font("Poppins", Font.ITALIC, 10));
+        dateLabelY.setBounds(303, 275, 30, 30);
+       
+        
+        
         /* changing appearance of the label
          * Font,text color,background color
          */
@@ -82,8 +105,10 @@ public class ShiftCreationFrame {
         l3.setFont(new Font("Poppins", Font.BOLD, 15));
         hospital.setFont(new Font("Poppins", Font.ITALIC, 15));
         
-        l4.setFont(new Font("Poppins", Font.BOLD, 15));
-        date.setFont(new Font("Poppins", Font.ITALIC, 15));
+        l4.setFont(new Font("Poppins", Font.BOLD, 16));
+        dateD.setFont(new Font("Poppins", Font.ITALIC, 16));
+        dateM.setFont(new Font("Poppins", Font.ITALIC, 16));
+        dateY.setFont(new Font("Poppins", Font.ITALIC, 16));
 
 
         //adds the labels to the frame
@@ -94,8 +119,13 @@ public class ShiftCreationFrame {
         frame.add(l3);
         frame.add(hospital);
         frame.add(l4);
-        frame.add(date);
+        frame.add(dateD);
+        frame.add(dateM);
+        frame.add(dateY);
         frame.add(heading);   
+        frame.add(dateLabelD);
+        frame.add(dateLabelM);
+        frame.add(dateLabelY);
         
 
         /* layout set to null ->
@@ -111,7 +141,12 @@ public class ShiftCreationFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-     public JButton getBtn()
+    public JFrame getFrame()
+    {
+        return frame;
+    }
+    
+     public JButton getCreateShiftBtn()
     {
         return createShiftBtn ;
     }
@@ -121,18 +156,33 @@ public class ShiftCreationFrame {
         return id;
     }
     
-    public JTextField getName()
+    public JTextField getType()
     {
         return type;
     }
     
-    public JTextField getPassword()
+    public JTextField getHospital()
     {
         return hospital;
     }
-
-    public JFrame getFrame()
+    
+    public JTextField getDateD()
     {
-        return frame;
+        return dateD;
+    }
+    
+    public JTextField getDateM()
+    {
+        return dateM;
+    }
+    
+    public JTextField getDateY()
+    {
+        return dateY;
+    }
+    
+    public JButton getNoChangesBtn()
+    {
+        return noChangesBtn;
     }
 }

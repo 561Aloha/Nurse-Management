@@ -13,12 +13,16 @@ import java.awt.*;
  */
 public class ChangePasswordFrame {
     private JFrame frame = new JFrame("Welcome");  
-    private JButton submitChangeBtn = new JButton("Submit Change"); 
+    
+    private JButton submitChangeBtn = new JButton("Save New Password"); 
+    private JButton noChangesBtn = new JButton("Go Back/No Changes");
     private JPasswordField oldpassword = new JPasswordField(10);
     private JPasswordField newpassword = new JPasswordField(10);
     
     public ChangePasswordFrame()
     {
+ 
+        
         //Creating JLabel
         JLabel l1 = new JLabel("Old Password");
         JLabel l2 = new JLabel("New Password");
@@ -34,16 +38,31 @@ public class ChangePasswordFrame {
         // Creating JLabel for the heading
         JLabel heading = new JLabel("Change Your Password");
         heading.setFont(new Font("Poppins", Font.BOLD, 20));
-        heading.setBounds(75, 50, 300, 30);
+        heading.setBounds(50, 50, 300, 30);
+        
+        JLabel subheading = new JLabel("please enter old password");
+        subheading.setFont(new Font("Poppins", Font.ITALIC, 10));
+        subheading.setBounds(175, 120, 300, 30);
+        frame.add(subheading);
 
+        JLabel subheading2 = new JLabel("please enter your new password");
+        subheading2.setFont(new Font("Poppins", Font.ITALIC, 10));
+        subheading2.setBounds(175, 170, 300, 30);
+        frame.add(subheading2);
+        
         // Creating JButton
-        /////JButton loginBtn = new JButton("Login");
         submitChangeBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
-        submitChangeBtn.setBounds(75, 200, 100, 30);
+        submitChangeBtn.setBounds(50, 225, 200, 30);
         frame.add(submitChangeBtn);
 
 
-
+        // Creating JButton
+        noChangesBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
+        noChangesBtn.setBounds(50, 275, 200, 30);
+        frame.add(noChangesBtn);
+  
+      
+        
 
         /* This method specifies the location and size
          * of any component = > setBounds(x, y, width, height)
@@ -51,10 +70,10 @@ public class ChangePasswordFrame {
          * corner and remaining two parameters are the width
          * and height of the specific component.
          */
-        l1.setBounds(50, 100, 150, 30);
+        l1.setBounds(50, 100, 200, 30);
         oldpassword.setBounds(175,100,150,30);
-
-        l2.setBounds(50, 150, 150, 30);
+        
+        l2.setBounds(50, 150, 200, 30);
         newpassword.setBounds(175,150,150,30);
 
 
@@ -64,6 +83,8 @@ public class ChangePasswordFrame {
         l1.setFont(new Font("Poppins", Font.BOLD, 15));
         oldpassword.setFont(new Font("Poppins", Font.ITALIC, 15));
 
+        
+        
         l2.setFont(new Font("Poppins", Font.BOLD, 15));
         newpassword.setFont(new Font("Poppins", Font.ITALIC, 15));
 
@@ -87,9 +108,13 @@ public class ChangePasswordFrame {
         frame.setSize(400, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
-        
-    public JButton getBtn()
+ 
+    public JFrame getFrame()
+    {
+        return frame;
+    }
+    
+    public JButton getSubmitChangeBtn()
     {
         return submitChangeBtn;
     }
@@ -103,9 +128,9 @@ public class ChangePasswordFrame {
     {
         return newpassword;
     }
-
-    public JFrame getFrame()
+    
+    public JButton getNoChangesBtn()
     {
-        return frame;
+        return noChangesBtn;
     }
 }

@@ -13,7 +13,6 @@ import java.awt.*;
  */
 public class ADashboardFrame {
     private JFrame frame = new JFrame("Welcome"); 
-    private JButton homeBtn = new JButton("Home");
     private JButton logoutBtn = new JButton("Logout");
     
     private JButton viewShiftsBtn = new JButton("View Shifts");
@@ -37,7 +36,6 @@ public class ADashboardFrame {
         leftPanel.add(subheading);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(homeBtn);
         buttonPanel.add(logoutBtn);
         
         
@@ -87,24 +85,6 @@ public class ADashboardFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    /*
-    private static class MenuPanel {
-        
-
-        JPanel menuu = new JPanel(new FlowLayout()); // Use FlowLayout for horizontal arrangement
-
-        public MenuPanel() {
-            Dimension buttonSize = new Dimension(250, 200); // Adjust the size as needed
-            viewShiftsBtn.setPreferredSize(buttonSize);
-            nursesBtn.setPreferredSize(buttonSize);
-            addNurseBtn.setPreferredSize(buttonSize);
-
-            menuu.add(viewShiftsBtn);
-            menuu.add(nursesBtn);
-            menuu.add(addNurseBtn);
-        }
-    }
-     */
 
     public JFrame getFrame()
     {

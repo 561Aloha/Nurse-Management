@@ -13,6 +13,8 @@ import java.awt.*;
  */
 public class AddNurseFrame {
     private JFrame frame = new JFrame("Welcome");  
+    
+    private JButton noChangesBtn = new JButton("Go Back/No Changes");
     private JButton addNurseBtn = new JButton("Add Nurse"); 
     private JTextField id = new JTextField(10);
     private JTextField name = new JTextField(10);
@@ -43,9 +45,12 @@ public class AddNurseFrame {
         // Creating JButton
         /////JButton loginBtn = new JButton("Login");
         addNurseBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
-        addNurseBtn.setBounds(50, 250, 100, 30);
+        addNurseBtn.setBounds(50, 250, 200, 30);
         frame.add(addNurseBtn);
-
+        
+        noChangesBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
+        noChangesBtn.setBounds(50, 300, 200, 30);
+        frame.add(noChangesBtn);
 
 
 
@@ -102,6 +107,11 @@ public class AddNurseFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
+    public JFrame getFrame()
+    {
+        return frame;
+    }
+    
     public JButton getBtn()
     {
         return addNurseBtn;
@@ -122,8 +132,8 @@ public class AddNurseFrame {
         return password;
     }
 
-    public JFrame getFrame()
+    public JButton getNoChangesBtn()
     {
-        return frame;
+        return noChangesBtn;
     }
 }
