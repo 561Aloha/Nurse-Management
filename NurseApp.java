@@ -8,6 +8,11 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 
 
 /**
@@ -35,6 +40,13 @@ public class NurseApp {
         ShiftCreationFrame shiftcreationframe = new ShiftCreationFrame();
         AddNurseFrame addnurseframe = new AddNurseFrame();
         
+        //public static ArrayList<Nurse> getNurseList() 
+        //{
+           // return appsys.getAvailableShifts;
+        //}
+    
+        
+        /*
         Shift shift1 = new Shift(2000,true,"Hospital A", new Date(120, 10, 15));
         Shift shift2 = new Shift(2000,false,"Hospital B", new Date(123, 1, 11));
         Shift shift3 = new Shift(2000,true,"Hospital C", new Date(122, 4, 22));
@@ -137,6 +149,31 @@ public class NurseApp {
         {
             System.out.println(shift.toString());
         }
+        System.out.println("");
+        */
+        
+        //ArrayList<Nurse> nursesTest2 = appsys.getNurses();
+        
+        
+        
+       
+        
+        System.out.println("Listing nurses");
+        ArrayList<Nurse> nursesTest = appsys.getNurses();
+        for(Nurse nurse: nursesTest)
+        {
+            System.out.println(nurse.toString());
+        }
+        System.out.println("");
+        
+        System.out.println("Listing shifts");
+        ArrayList<Shift> shiftsTest = appsys.getAvailableShifts();
+        for(Shift shift: shiftsTest)
+        {
+            System.out.println(shift.toString());
+        }
+        
+        
         
         ///////////////////////////////login frame///////////////////////////////
         //login button action listener
@@ -405,6 +442,19 @@ public class NurseApp {
             }
         );
         
+        //remove nurse action listener 
+        viewmanager.attachListener(nursesframe.getDeleteShiftsBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    nursesframe.deleteSelectedNurse();
+                }
+            }
+        );
+        
+        
         
         ///////////////////////////////shifts frame (nurse)///////////////////////////////
         //logout button action listener
@@ -537,9 +587,9 @@ public class NurseApp {
                     String hospital = shiftcreationframe.getHospital().getText().toLowerCase();
                     
                     Integer dateD = Integer.valueOf(shiftcreationframe.getDateD().getText());
-                    Integer dateM = Integer.valueOf(shiftcreationframe.getDateD().getText());
-                    Integer dateY = Integer.valueOf(shiftcreationframe.getDateD().getText());
-                    Date date = new Date(dateY-1900,dateM,dateD);
+                    Integer dateM = Integer.valueOf(shiftcreationframe.getDateM().getText());
+                    Integer dateY = Integer.valueOf(shiftcreationframe.getDateY().getText());
+                    Date date = new Date(dateY-1900,dateM-1,dateD);
                     
                     
                     

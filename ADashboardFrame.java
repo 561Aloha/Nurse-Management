@@ -15,6 +15,7 @@ public class ADashboardFrame {
     private JFrame frame = new JFrame("Welcome"); 
     private JButton logoutBtn = new JButton("Logout");
     
+    
     private JButton viewShiftsBtn = new JButton("View Shifts");
     private JButton nursesBtn = new JButton("View Nurses");
     private JButton addNurseBtn = new JButton("Add Nurse");
@@ -78,7 +79,6 @@ public class ADashboardFrame {
         
         // Add the content panel to the frame
         frame.add(contentPanel);
-
 
         // This method sets the width and height of the frame
         frame.setSize(800, 800); // Adjust the size as needed

@@ -6,12 +6,17 @@ package project;
 
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  *
  * @author Romari
  */
-public class Shift {
+public class Shift implements Serializable{
     private int shiftID;
     private boolean isDay;
     private String hospital;
@@ -26,6 +31,12 @@ public class Shift {
         this.shiftDate = shiftDate;
         this.nurseID = 0;
         
+        try {
+            this.serializeShift(Integer.toString(this.shiftID));
+        } catch (IOException e) {
+            // Handle exception or propagate it
+            System.err.println("Serialization failed: " + e.getMessage());
+        }
     }
     
     public int getShiftID()
@@ -73,5 +84,20 @@ public class Shift {
         }
         
         return Integer.toString(getShiftID()) + " " + type + " " + getHospital() + " " + " " + formatter.format(getShiftDate());
+    }
+    
+    public void serializeShift(String filename) throws IOException {
+    
+        File directory = new File("shifts");
+        if (!directory.exists()) {
+            directory.mkdirs(); // Create the folder if it doesn't exist
+        }
+
+        // Combine the folder path and filename
+        String fullPath = "shifts" + File.separator + filename;
+
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fullPath))) {
+            out.writeObject(this);
+        }
     }
 }

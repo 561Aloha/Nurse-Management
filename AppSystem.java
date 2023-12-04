@@ -6,6 +6,13 @@ package project;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+//import java.util.List;
 
 /**
  *
@@ -15,7 +22,7 @@ public class AppSystem {
     private Admin systemAdmin;// = new Admin(1000, "admin");
     private Nurse testNurse;
     private ArrayList<Shift> availableShifts = new ArrayList<>();
-    private ArrayList<Nurse> nurses = new ArrayList<>();
+    private static ArrayList<Nurse> nurses = new ArrayList<>();
     //private ArrayList<String> hospitals;
     private int currentUserID;
     private Date currentDate = new Date();
@@ -28,10 +35,49 @@ public class AppSystem {
     {
        currentUserID = 0 ;
        systemAdmin = new Admin(1000, "admin", "admin");
-       testNurse = new Nurse(1001,"Test", "test");
+       //testNurse = new Nurse(1001,"Test", "test");
        
-       nurses.add(testNurse);
+       //nurses.add(testNurse);
        
+       
+       //serialize nurses
+       File nurseFolder = new File("nurses");
+       File[] nurseFiles = nurseFolder.listFiles();
+        
+       for (File nurseFile : nurseFiles) 
+       {
+           if (nurseFile.isFile()) {
+               try (ObjectInputStream nurseOis = new ObjectInputStream(new FileInputStream(nurseFile))) 
+               {
+                   Nurse nurseObject = (Nurse) nurseOis.readObject();
+                   nurses.add(nurseObject);
+                   System.out.println(nurseObject.getID());
+               } catch (IOException | ClassNotFoundException e) {
+                   e.printStackTrace();
+               }
+           }
+       }
+       
+        
+       //serialize available shifts
+       File shiftFolder = new File("shifts");
+       File[] shiftFiles = shiftFolder.listFiles();
+
+       for (File shiftFile : shiftFiles) 
+       {
+           if (shiftFile.isFile()) {
+               try (ObjectInputStream shiftOis = new ObjectInputStream(new FileInputStream(shiftFile))) 
+               {
+                   Shift shiftObject = (Shift) shiftOis.readObject();
+                   availableShifts.add(shiftObject);
+                   System.out.println(shiftObject.getShiftID());
+               } catch (IOException | ClassNotFoundException e) {
+                   e.printStackTrace();
+               }
+           }
+       }
+        
+        
        //availableShifts.add(new Shift(2000,true,"Hospital A", new Date(40, 9, 19)));
        //hospitals.add("Hospital A");
        //hospitals.add("Hospital B");
@@ -61,10 +107,14 @@ public class AppSystem {
         return nurses;
     }
     
+    public static ArrayList<Nurse> getNurseList() {
+        return nurses;
+    }
+    
     public ArrayList<Shift> getAvailableShifts()
     {
         return availableShifts;
-    }
+    } 
     
     public int getAdminID()
     {
@@ -132,4 +182,23 @@ public class AppSystem {
             }
         }
     }
+    
+    public static void removeNurseFile(Nurse nurse){
+        nurses.remove(nurse);
+        System.out.println("removed");
+        String directoryPath = "nurses";
+        String filename = "nurses" + File.separator + String.valueOf(nurse.getID());
+        File fileToDelete = new File(filename);
+        if (fileToDelete.exists()) {
+            boolean isDeleted = fileToDelete.delete();
+            if (isDeleted) {
+                System.out.println("Nurse file deleted successfully.");
+            } else {
+                System.out.println("Failed to delete the nurse file.");
+            }
+        }
+        
+    }
+    
+    
 }

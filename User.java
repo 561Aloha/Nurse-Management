@@ -4,11 +4,13 @@
  */
 package project;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Romari
  */
-public abstract class User {
+public abstract class User implements Serializable {
     private int id;
     private String name;
     protected String password;

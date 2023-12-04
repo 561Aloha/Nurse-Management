@@ -6,6 +6,17 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Iterator;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
 
 /**
  *
@@ -18,62 +29,68 @@ public class NursesFrame {
     
     private JButton deleteShiftsBtn = new JButton("Delete Nurse");
     
+    private DefaultListModel<Nurse> nurseListModel = new DefaultListModel<>();
+    private JList<Nurse> nurseList = new JList<>(nurseListModel);
+    //ArrayList<Nurse> nurses = new ArrayList<>();
+    
     public NursesFrame()
     {
+        ////this.nurses = nurses;
+        
         JLabel heading = new JLabel("eNurse");
         heading.setFont(new Font("Poppins", Font.BOLD, 20));
         JLabel subheading = new JLabel("Admin Nurses Frame");
         subheading.setFont(new Font("Poppins", Font.ITALIC, 10));
-        
-        
-       
-        
+
+        // Setup left panel for heading and subheading
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.add(heading);
         leftPanel.add(subheading);
 
+        // Setup top panel for buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(homeBtn);
         buttonPanel.add(logoutBtn);
-        
-        
 
-        //The Header BorderLayout
-        JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.add(leftPanel, BorderLayout.WEST);
-        contentPanel.add(buttonPanel, BorderLayout.NORTH);
-        contentPanel.add(new JSeparator(), BorderLayout.CENTER); // Horizontal Line
-        
-        JLabel welcomeLabel = new JLabel("Welcome");
-        welcomeLabel.setFont(new Font("Poppins", Font.BOLD, 20));
-        JPanel welcomePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        welcomePanel.add(welcomeLabel, BorderLayout.CENTER);
-        contentPanel.add(welcomeLabel); 
-        
-        
-        
-        JPanel menu = new JPanel(new FlowLayout());
-        
-        Dimension buttonSize = new Dimension(250, 200); // Adjust the size as needed
-        deleteShiftsBtn.setPreferredSize(buttonSize);
+        // Header panel
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.add(leftPanel, BorderLayout.WEST);
+        headerPanel.add(buttonPanel, BorderLayout.EAST);
 
-        menu.add(deleteShiftsBtn);
-        
-        contentPanel.add(menu, BorderLayout.SOUTH);
-        int bottomPadding = 350;
-        menu.setBorder(BorderFactory.createEmptyBorder(0, 0, bottomPadding, 0));
-        
-        
-        // Set layout manager for the frame
-        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+        // Setting up the nurse list
+        nurseList.setFont(new Font("Arial", Font.PLAIN, 18)); // Larger font for nurse list
+        nurseList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane listScrollPane = new JScrollPane(nurseList);
+        listScrollPane.setPreferredSize(new Dimension(300, 400)); // Adjust size as needed
+        nurseList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (c instanceof JLabel) {
+                    JLabel label = (JLabel) c;
+                    label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY)); 
+                    label.setPreferredSize(new Dimension(label.getWidth(), 50)); // Increase cell height
 
+                }
+                return c;
+            }
+        });
         
-        // Add the content panel to the frame
-        frame.add(contentPanel);
+        
+        /////deleteShiftsBtn.addActionListener(e -> deleteSelectedNurse());
+        JPanel deleteButtonPanel = new JPanel();
+        deleteButtonPanel.add(deleteShiftsBtn);
+       
 
+        frame.setLayout(new BorderLayout());
+        frame.add(headerPanel, BorderLayout.NORTH);
+        frame.add(listScrollPane, BorderLayout.CENTER);
+        frame.add(deleteButtonPanel, BorderLayout.SOUTH);
 
-        // This method sets the width and height of the frame
+        // Display nurses
+        displayNurses();
+
         frame.setSize(800, 800); // Adjust the size as needed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -91,5 +108,31 @@ public class NursesFrame {
     public JButton getHomeBtn()
     {
         return homeBtn;
+    }
+    
+    public JButton getDeleteShiftsBtn()
+    {
+        return deleteShiftsBtn;
+    }
+    
+    private void displayNurses() {        
+        var nurses = AppSystem.getNurseList();
+        NurseCollection nurseCollection = new NurseCollection(nurses);
+
+        NurseIterator nurseIterator =nurseCollection.createIterator();
+        while (nurseIterator.hasNext()) {
+            Nurse nurse = nurseIterator.next();
+            nurseListModel.addElement(nurse);
+        }
+    }
+    
+     //Delete Selected Nurses
+    public void deleteSelectedNurse() {
+        int selectedIndex = nurseList.getSelectedIndex();
+        if (selectedIndex != -1) {
+            Nurse selectedNurse = nurseListModel.get(selectedIndex);
+            AppSystem.removeNurseFile(selectedNurse); // Implement this method in NurseManager
+            nurseListModel.remove(selectedIndex);
+    }
     }
 }
