@@ -23,7 +23,7 @@ import javax.swing.JFrame;
  * @author Romari
  */
 public class NursesFrame {
-    private JFrame frame = new JFrame("Welcome"); 
+    private JFrame frame = new JFrame("Nurses"); 
     private JButton homeBtn = new JButton("Home");
     private JButton logoutBtn = new JButton("Logout");
     

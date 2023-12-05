@@ -12,7 +12,7 @@ import java.awt.*;
  * @author Romari
  */
 public class ChangePasswordFrame {
-    private JFrame frame = new JFrame("Welcome");  
+    private JFrame frame = new JFrame("Change Password");  
     
     private JButton submitChangeBtn = new JButton("Save New Password"); 
     private JButton noChangesBtn = new JButton("Go Back/No Changes");

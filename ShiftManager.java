@@ -25,7 +25,7 @@ public class ShiftManager
         availableShifts.add(shift);
     }
     
-    public void reserveShift(ArrayList<Shift> availableShifts, Nurse currentNurse, Shift shift)
+   /* public void reserveShift(ArrayList<Shift> availableShifts, Nurse currentNurse, Shift shift)
     {
         for (Shift availableShift : availableShifts) 
         {
@@ -35,20 +35,22 @@ public class ShiftManager
                 currentNurse.reserveShift(shift);
             }
         }
+        
+        
+    }*/
+    
+    public void reserveShift( Shift shift)
+    {
+
+        AppSystem.getCurrentNurse().reserveShift(shift);
+       
+
     }
     
-    
-    public void cancelReservation(ArrayList<Shift> availableShifts, Nurse currentNurse, int shiftID)
+    public void cancelReservation(Shift shift)
     {
-        ArrayList<Shift> nurseSchedule = currentNurse.getNurseSchedule();
-        for (Shift currentShift : nurseSchedule) 
-        {
-            if(currentShift.getShiftID() == shiftID)
-            {
-                availableShifts.add(currentShift);
-                nurseSchedule.remove(currentShift);
-            }
-        }
+        
+        AppSystem.getCurrentNurse().cancelShift(shift);
     }
     
     

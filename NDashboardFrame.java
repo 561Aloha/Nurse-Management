@@ -12,7 +12,7 @@ import java.awt.*;
  * @author Romari
  */
 public class NDashboardFrame {
-    private JFrame frame = new JFrame("Welcome");
+    private JFrame frame = new JFrame("Nurse Dashboard");
     private JButton changePassBtn = new JButton("Change Password");
     private JButton logoutBtn = new JButton("Logout");
     

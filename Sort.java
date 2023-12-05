@@ -7,13 +7,21 @@ package project;
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.ArrayList;
+import javax.swing.*;
 
 /**
  *
  * @author Romari
  * @param <E>
  */
-public class Sort<E> {
+public class Sort<E> extends JPanel {
+    private JRadioButton hospitalOpt = new  JRadioButton("Hospital");
+    private JRadioButton shiftOpt = new JRadioButton("Shift");
+    private JRadioButton dateOpt = new JRadioButton("Date");
+
+    private JLabel titleLabel = new JLabel("Sorting");
+    private JButton submitButton = new JButton("Sort");
+    
     public Sort()
     {
         

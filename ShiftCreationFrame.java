@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Romari
  */
 public class ShiftCreationFrame {
-    private JFrame frame = new JFrame("Welcome");  
+    private JFrame frame = new JFrame("Create Shift");  
     
     private JButton noChangesBtn = new JButton("Go Back/No Changes");
     private JButton createShiftBtn = new JButton("Create Shift"); 

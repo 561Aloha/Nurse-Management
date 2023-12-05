@@ -12,7 +12,7 @@ import java.awt.*;
  * @author Romari
  */
 public class LoginFrame {
-    private JFrame frame = new JFrame("Welcome");  
+    private JFrame frame = new JFrame("Login");  
     private JButton loginBtn = new JButton("Login"); 
     private JTextField name = new JTextField(10);
     private JPasswordField password = new JPasswordField(10);

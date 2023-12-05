@@ -12,7 +12,7 @@ import java.awt.*;
  * @author Romari
  */
 public class ADashboardFrame {
-    private JFrame frame = new JFrame("Welcome"); 
+    private JFrame frame = new JFrame("Admin Dashboard"); 
     private JButton logoutBtn = new JButton("Logout");
     
     

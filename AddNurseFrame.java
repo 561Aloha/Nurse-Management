@@ -12,7 +12,7 @@ import java.awt.*;
  * @author Romari
  */
 public class AddNurseFrame {
-    private JFrame frame = new JFrame("Welcome");  
+    private JFrame frame = new JFrame("Add Nurse");  
     
     private JButton noChangesBtn = new JButton("Go Back/No Changes");
     private JButton addNurseBtn = new JButton("Add Nurse"); 

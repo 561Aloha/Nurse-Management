@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author Romari
  */
 public class Nurse extends User implements Serializable{
-    private ArrayList<Shift> nurseSchedule = new ArrayList<>();
+    private static ArrayList<Shift> nurseSchedule = new ArrayList<>();
     private Boolean serialized; 
     
     public Nurse(int nurseID, String name, String password)
@@ -30,7 +30,7 @@ public class Nurse extends User implements Serializable{
         }
     }
     
-    public ArrayList<Shift> getNurseSchedule()
+    public static ArrayList<Shift> getNurseSchedule()
     {
         return nurseSchedule;
     }

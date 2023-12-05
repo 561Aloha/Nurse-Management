@@ -27,7 +27,7 @@ public class Shift implements Serializable{
     {
         this.shiftID = shiftID;
         this.isDay = isDay;
-        this.hospital = hospital;
+        this.hospital = hospital.toLowerCase();
         this.shiftDate = shiftDate;
         this.nurseID = 0;
         
@@ -98,6 +98,22 @@ public class Shift implements Serializable{
 
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fullPath))) {
             out.writeObject(this);
+        }
+    }
+    
+    public String getShiftDateString()
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+        return (formatter.format(getShiftDate()));
+    }
+    public String getTimeString()
+    {
+        if (this.getIsDay()==true)
+        {
+            return "7am-7pm";
+        }
+        else{
+            return "7pm-7am";
         }
     }
 }

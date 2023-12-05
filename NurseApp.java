@@ -26,7 +26,7 @@ public class NurseApp {
         ViewManager viewmanager = new ViewManager();
         ShiftManager shiftmanager = new ShiftManager();
         Sort sort = new Sort();
-        Filter filter = new Filter();
+        //Filter filter = new Filter();
         
         //frames
         LoginFrame loginframe = new LoginFrame();
@@ -34,7 +34,7 @@ public class NurseApp {
         ADashboardFrame adashboard = new ADashboardFrame();
         NShiftsFrame nshiftsframe = new NShiftsFrame();
         AShiftsFrame ashiftsframe = new AShiftsFrame();
-        ScheduleFrame scheduleframe = new ScheduleFrame();
+        //ScheduleFrame scheduleframe = new ScheduleFrame();
         ChangePasswordFrame changepasswordframe = new ChangePasswordFrame();
         NursesFrame nursesframe = new NursesFrame();
         ShiftCreationFrame shiftcreationframe = new ShiftCreationFrame();
@@ -189,6 +189,7 @@ public class NurseApp {
                     if (appsys.verifyLogin(Integer.parseInt(id), password)==true)
                     {
                         
+                        
                         viewmanager.setVisibility(loginframe.getFrame(), false);
                         
                         if(Integer.parseInt(id) == appsys.getAdminID())
@@ -202,6 +203,9 @@ public class NurseApp {
                         
                         loginframe.getJtxtField().setText("");
                         loginframe.getPassField().setText("");
+                        
+                        //ScheduleFrame.Schedule obj = new ScheduleFrame().new Schedule();
+                        //obj.displayShifts();
                     }       
                 }
             }
@@ -258,9 +262,41 @@ public class NurseApp {
                 @Override
                 public void actionPerformed(ActionEvent event)
                 {
+                    ScheduleFrame scheduleframe = new ScheduleFrame();
+                    ///////////////////////////////schedule frame (nurse)///////////////////////////////
+        //logout button action listener
+        viewmanager.attachListener(scheduleframe.getLogoutBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(scheduleframe.getFrame(), false);
+                    viewmanager.setVisibility(loginframe.getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //home button action listener
+        viewmanager.attachListener(scheduleframe.getHomeBtn(), 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(scheduleframe.getFrame(), false);
+                    viewmanager.setVisibility(ndashboard.getFrame(), true);
+                         
+                }
+            }
+        );
                     viewmanager.setVisibility(ndashboard.getFrame(), false);
                     viewmanager.setVisibility(scheduleframe.getFrame(), true);
-                         
+                    
+                    
+                    
                 }
             }
         );
@@ -520,35 +556,7 @@ public class NurseApp {
         
         
         
-        ///////////////////////////////schedule frame (nurse)///////////////////////////////
-        //logout button action listener
-        viewmanager.attachListener(scheduleframe.getLogoutBtn(), 
-            new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent event)
-                {
-                    viewmanager.setVisibility(scheduleframe.getFrame(), false);
-                    viewmanager.setVisibility(loginframe.getFrame(), true);
-                    appsys.setCurrentID(0);
-                         
-                }
-            }
-        );
         
-        //home button action listener
-        viewmanager.attachListener(scheduleframe.getHomeBtn(), 
-            new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent event)
-                {
-                    viewmanager.setVisibility(scheduleframe.getFrame(), false);
-                    viewmanager.setVisibility(ndashboard.getFrame(), true);
-                         
-                }
-            }
-        );
         
         
         ///////////////////////////////shift creation frame (admin)///////////////////////////////

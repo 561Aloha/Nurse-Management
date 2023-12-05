@@ -21,23 +21,27 @@ import java.util.ArrayList;
 public class AppSystem {
     private Admin systemAdmin;// = new Admin(1000, "admin");
     private Nurse testNurse;
-    private ArrayList<Shift> availableShifts = new ArrayList<>();
+    private static ArrayList<Shift> availableShifts = new ArrayList<>();
     private static ArrayList<Nurse> nurses = new ArrayList<>();
     //private ArrayList<String> hospitals;
-    private int currentUserID;
+    private static int currentUserID;
     private Date currentDate = new Date();
     
     //make accessors
-    Sort sort = new Sort();
-    Filter filter = new Filter();
+    //Sort sort = new Sort();
+    //Filter filter = new Filter();
     
     public AppSystem()
     {
        currentUserID = 0 ;
        systemAdmin = new Admin(1000, "admin", "admin");
-       //testNurse = new Nurse(1001,"Test", "test");
+       testNurse = new Nurse(1005,"Test", "test");
        
-       //nurses.add(testNurse);
+       
+       testNurse.reserveShift(new Shift(2005,true,"hospital c", new Date(2023,10,2)));
+       
+       nurses.add(testNurse);
+       
        
        
        //serialize nurses
@@ -85,7 +89,7 @@ public class AppSystem {
        //hospitals.add("Hospital D");
     }
     
-    public Nurse getCurrentNurse()
+    public static Nurse getCurrentNurse()
     {
         for(Nurse nurse: nurses)
         {
@@ -111,7 +115,7 @@ public class AppSystem {
         return nurses;
     }
     
-    public ArrayList<Shift> getAvailableShifts()
+    public static ArrayList<Shift> getAvailableShifts()
     {
         return availableShifts;
     } 
@@ -196,9 +200,22 @@ public class AppSystem {
             } else {
                 System.out.println("Failed to delete the nurse file.");
             }
-        }
-        
+        }    
     }
     
+    public static ArrayList<Shift> getShiftList() 
+    {
+        return availableShifts;
+    }
+     
+    public static void addShift(Shift shift) 
+    {
+        availableShifts.add(shift);
+    }
+    
+    public static void removeShift(Shift shift)
+    {
+        availableShifts.remove(shift);
+    }
     
 }
