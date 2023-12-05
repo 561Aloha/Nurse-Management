@@ -28,4 +28,10 @@ public class ConcreteNurseIterator  implements NurseIterator{
     public Nurse next() {
         return nurses.get(idx++);
     }
+    
+    @Override
+    public boolean isDone()
+    {
+        return idx == nurses.size();
+    }
 }

@@ -11,4 +11,5 @@ package project;
 public interface NurseIterator {
     boolean hasNext();
     Nurse next();
+    boolean isDone();
 }

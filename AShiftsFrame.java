@@ -19,6 +19,7 @@ public class AShiftsFrame {
     private JButton removeBtn = new JButton("Remove Shift");
     private ArrayList<Shift> shiftsList = AppSystem.getShiftList();
     Filter filter = new Filter(shiftsList);
+    Sort sort = new Sort();
     
     
     public AShiftsFrame()
@@ -68,11 +69,7 @@ public class AShiftsFrame {
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
         frame.add(meepPanel);
         
-        ///frame.setVisible(true);
-        // This method sets the width and height of the frame
-        ////frame.setSize(1000, 800); //
-        
-        
+   
         ////frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         Schedule schedule = new Schedule();
@@ -110,23 +107,9 @@ public class AShiftsFrame {
         JList<Shift> jList = new JList<>(listModel);    
 
         public void createScheduleFrame(Container container) {
-            // Create an ArrayList to store data
-            //ArrayList<Shift> dataList = new ArrayList<>();
             
             displayShifts();
-            /*
-            dataList.add(new DetailItem("2023-01-01", "10:00 AM - 4:00PM", "City Hospital"));
-            dataList.add(new DetailItem("2023-01-02", "08:30 AM - 2:00PM", "General Hospital"));
-            dataList.add(new DetailItem("2023-01-03", "08:45 AM - 3:00PM", "Medical Center"));
-            dataList.add(new DetailItem("2023-01-04", "09:15 AM - 4:00PM", "Community Hospital"));
-            */
-            // Create a DefaultListModel to hold the data
-
-            // Populate the DefaultListModel with data from the ArrayList
-            //for (DetailItem item : dataList) {
-             //   listModel.addElement(item);
-            //}
-
+           
             // These are the details that goes inside.
             jList.setCellRenderer(new MiniGrid());
 
@@ -137,16 +120,15 @@ public class AShiftsFrame {
             
             removeBtn.addActionListener(e -> deleteSelectedShift());
                    
-            
-            //Sort_D sortPanel = new Sort_D(shiftsList);
-            
             filter.getSubmitBtn().addActionListener(e -> filterShifts());
+            
+            sort.getSubmitBtn().addActionListener(e -> sortShifts());
             
 
             JPanel westPanel = new JPanel();
             westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
             westPanel.add(filter);
-            //westPanel.add(sortPanel);
+            westPanel.add(sort);
 
             JPanel eastPanel = new JPanel();
             eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
@@ -185,8 +167,6 @@ public class AShiftsFrame {
                 panel.add(createLabel("Hospital:"));
                 panel.add(createLabel(shift.getHospital()));
                 
-                //panel.add(createLabel("Shift:"));
-                //panel.add(createLabel(shift.toString()));
 
                 //The Border around the Panel
                 panel.setBorder(BorderFactory.createCompoundBorder(
@@ -230,11 +210,16 @@ public class AShiftsFrame {
         private void filterShifts()
         {
             listModel.clear();
-            //Filter filter = new Filter(AppSystem.getShiftList());
             
             var shifts = AppSystem.getShiftList();
             
-            if(filter.getABtn().isSelected())
+            
+            if(filter.getNoneBtn().isSelected())
+            {
+                System.out.println("radio button none");
+                shifts = AppSystem.getShiftList();
+            }
+            else if(filter.getABtn().isSelected())
             {
                 System.out.println("radio button A");
                 shifts = filter.filterShiftsByHospital(1);
@@ -265,20 +250,37 @@ public class AShiftsFrame {
                 shifts = filter.filterShiftsByType(2);
             }
             
-            
-            for(Shift shift: shifts)
+       
+            ShiftCollection shiftCollection = new ShiftCollection(shifts);
+
+            ShiftIterator shiftIterator =shiftCollection.createIterator();
+            while (shiftIterator.hasNext()) 
             {
-                System.out.println(shift.toString());
+                Shift shift = shiftIterator.next();
+                listModel.addElement(shift);
             }
             
-            for(Shift shift: shiftsList)
+        }
+        
+        private void sortShifts()
+        {
+            listModel.clear();
+            
+            var shifts = AppSystem.getShiftList();
+            
+            if(sort.getHospitalOpt().isSelected())
             {
-                System.out.println(shift.toString());
+                sort.sortCollection(shifts, sort.getCompByShiftHospital());
+            }
+            else if(sort.getTimeOpt().isSelected())
+            {
+                sort.sortCollection(shifts, sort.getCompByShiftType());
+            }
+            else if(sort.getDateOpt().isSelected())
+            {
+                sort.sortCollection(shifts, sort.getCompByShiftDate());
             }
             
-            
-            
-            System.out.println("here");
             ShiftCollection shiftCollection = new ShiftCollection(shifts);
 
             ShiftIterator shiftIterator =shiftCollection.createIterator();
@@ -291,9 +293,5 @@ public class AShiftsFrame {
             
         }
         
-        private void addShift() 
-        {
-            /*take to wherever you open another page to add a shift*/
-        }
     }
 }

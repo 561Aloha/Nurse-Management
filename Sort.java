@@ -12,28 +12,32 @@ import javax.swing.*;
 /**
  *
  * @author Romari
- * @param <E>
  */
-public class Sort<E> extends JPanel {
-    private JRadioButton hospitalOpt = new  JRadioButton("Hospital");
-    private JRadioButton shiftOpt = new JRadioButton("Shift");
-    private JRadioButton dateOpt = new JRadioButton("Date");
-
+public class Sort extends JPanel {
     private JLabel titleLabel = new JLabel("Sorting");
-    private JButton submitButton = new JButton("Sort");
+    private JRadioButton hospitalOpt = new  JRadioButton("Hospital");
+    private JRadioButton timeOpt = new JRadioButton("Time");
+    private JRadioButton dateOpt = new JRadioButton("Date");
+    private JButton submitBtn = new JButton("Sort");
     
     public Sort()
     {
-        
-    }
-    
-    public Comparator<Nurse> getCompByNurseName() {
-        return new Comparator<Nurse>() {
-            @Override
-            public int compare(Nurse nurse1, Nurse nurse2) {
-                return nurse1.getName().compareTo(nurse2.getName());
-            }
-        };
+        int topPadding = 50;
+        this.setBorder(BorderFactory.createEmptyBorder(topPadding,0,0,0));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        ButtonGroup sortGroup = new ButtonGroup();
+
+        sortGroup.add(timeOpt);
+        sortGroup.add(hospitalOpt);
+        sortGroup.add(dateOpt);
+
+        this.add(titleLabel);
+        this.add(hospitalOpt);
+        this.add(timeOpt);
+        this.add(dateOpt);
+
+        this.add(submitBtn);
     }
     
     public Comparator<Shift> getCompByShiftDate() {
@@ -81,9 +85,35 @@ public class Sort<E> extends JPanel {
         };
     }
     
-    public void sortCollection(ArrayList<E> arrList, Comparator<E> comp)
+    public void sortCollection(ArrayList<Shift> shifts, Comparator<Shift> comp)
     {
-        Collections.sort(arrList, comp);
+        //ArrayList<Shift> sortedShifts = new ArrayList<>();
+        //for(Shift shift: shifts)
+        //{
+            //sortedShifts.add(shift);
+        //}
+        
+        Collections.sort(shifts, comp);
+    }
+    
+    public JRadioButton getHospitalOpt()
+    {
+        return hospitalOpt;
+    }
+    
+    public JRadioButton getTimeOpt()
+    {
+        return timeOpt;
+    }
+    
+    public JRadioButton getDateOpt()
+    {
+        return dateOpt;
+    }
+    
+    public JButton getSubmitBtn()
+    {
+        return submitBtn;
     }
     
 }

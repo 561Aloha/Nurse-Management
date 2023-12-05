@@ -28,4 +28,10 @@ public class ConcreteShiftIterator implements ShiftIterator{
     public Shift next() {
         return shifts.get(idx++);
     }
+    
+    @Override
+    public boolean isDone()
+    {
+        return idx == shifts.size();
+    }
 }

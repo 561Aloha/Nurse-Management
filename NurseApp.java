@@ -206,6 +206,8 @@ public class NurseApp {
                         
                         //ScheduleFrame.Schedule obj = new ScheduleFrame().new Schedule();
                         //obj.displayShifts();
+                        
+                        
                     }       
                 }
             }
@@ -264,7 +266,7 @@ public class NurseApp {
                 {
                     ScheduleFrame scheduleframe = new ScheduleFrame();
                     ///////////////////////////////schedule frame (nurse)///////////////////////////////
-        //logout button action listener
+                    //logout button action listener
         viewmanager.attachListener(scheduleframe.getLogoutBtn(), 
             new ActionListener()
             {

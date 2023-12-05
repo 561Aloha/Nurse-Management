@@ -11,4 +11,5 @@ package project;
 public interface ShiftIterator {
     boolean hasNext();
     Shift next();
+    boolean isDone();
 }

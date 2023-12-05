@@ -16,14 +16,16 @@ public class NShiftsFrame {
     private JFrame frame = new JFrame("Available Shifts"); 
     private JButton homeBtn = new JButton("Home");
     private JButton logoutBtn = new JButton("Logout");
-    
     private JButton reserveShiftsBtn = new JButton("Reserve Shift");
+    private ArrayList<Shift> shiftsList = AppSystem.getShiftList();
+    Filter filter = new Filter(shiftsList);
+    Sort sort = new Sort();
     
     public NShiftsFrame()
     {
         JLabel heading = new JLabel("eNurse");
         heading.setFont(new Font("Poppins", Font.BOLD, 20));
-        JLabel subheading = new JLabel("Admin Shifts Frame");
+        JLabel subheading = new JLabel("Nurse Shifts Frame");
         subheading.setFont(new Font("Poppins", Font.ITALIC, 10));
         
         
@@ -117,20 +119,21 @@ public class NShiftsFrame {
             JButton addShiftBtn = new JButton("addShift");
             addShiftBtn.addActionListener(e -> addShift());
             
+            filter.getSubmitBtn().addActionListener(e -> filterShifts());
             
-                   
-            ArrayList<Shift> shiftsList = (ArrayList<Shift>) AppSystem.getAvailableShifts();
+            sort.getSubmitBtn().addActionListener(e -> sortShifts());
+            
+            ///ArrayList<Shift> shiftsList = (ArrayList<Shift>) AppSystem.getAvailableShifts();
             
             
             
-            Filter filter = new Filter(shiftsList);
             //Sort_D sortPanel = new Sort_D(shiftsList);
             
 
             JPanel westPanel = new JPanel();
             westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
             westPanel.add(filter);
-            //westPanel.add(sortPanel);
+            westPanel.add(sort);
 
             JPanel eastPanel = new JPanel();
             eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
@@ -189,7 +192,7 @@ public class NShiftsFrame {
         }
         private void displayShifts() 
         {        
-            var shifts = AppSystem.getAvailableShifts();
+            var shifts = AppSystem.getShiftList();
             System.out.println("here");
             ShiftCollection shiftCollection = new ShiftCollection(shifts);
 
@@ -221,6 +224,91 @@ public class NShiftsFrame {
             //ScheduleFrame scheduleframe = new ScheduleFrame();
             //scheduleframe.getFrame().setVisible(true);
             //getFrame().setVisible(false);
+        }
+        
+        private void filterShifts()
+        {
+            listModel.clear();
+            
+            var shifts = AppSystem.getShiftList();
+            
+            
+            if(filter.getNoneBtn().isSelected())
+            {
+                System.out.println("radio button none");
+                shifts = AppSystem.getShiftList();
+            }
+            else if(filter.getABtn().isSelected())
+            {
+                System.out.println("radio button A");
+                shifts = filter.filterShiftsByHospital(1);
+            }
+            else if(filter.getBBtn().isSelected())
+            {
+                System.out.println("radio button B");
+                shifts = filter.filterShiftsByHospital(2);
+            }
+            else if(filter.getCBtn().isSelected())
+            {
+                System.out.println("radio button C");
+                shifts = filter.filterShiftsByHospital(3);
+            }
+            else if(filter.getDBtn().isSelected())
+            {
+                System.out.println("radio button D");
+                shifts = filter.filterShiftsByHospital(4);
+            }
+            else if(filter.getDayBtn().isSelected())
+            {
+                System.out.println("radio button day");
+                shifts = filter.filterShiftsByType(1);
+            }
+            else if(filter.getNightBtn().isSelected())
+            {
+                System.out.println("radio button night");
+                shifts = filter.filterShiftsByType(2);
+            }
+            
+       
+            ShiftCollection shiftCollection = new ShiftCollection(shifts);
+
+            ShiftIterator shiftIterator =shiftCollection.createIterator();
+            while (shiftIterator.hasNext()) 
+            {
+                Shift shift = shiftIterator.next();
+                listModel.addElement(shift);
+            }    
+        }
+        
+        private void sortShifts()
+        {
+            listModel.clear();
+            
+            var shifts = AppSystem.getShiftList();
+            
+            if(sort.getHospitalOpt().isSelected())
+            {
+                sort.sortCollection(shifts, sort.getCompByShiftHospital());
+            }
+            else if(sort.getTimeOpt().isSelected())
+            {
+                sort.sortCollection(shifts, sort.getCompByShiftType());
+            }
+            else if(sort.getDateOpt().isSelected())
+            {
+                sort.sortCollection(shifts, sort.getCompByShiftDate());
+            }
+            
+            ShiftCollection shiftCollection = new ShiftCollection(shifts);
+
+            ShiftIterator shiftIterator =shiftCollection.createIterator();
+            while (shiftIterator.hasNext()) 
+            {
+                Shift shift = shiftIterator.next();
+                listModel.addElement(shift);
+            }
+            
+            
         }
     }
 }
