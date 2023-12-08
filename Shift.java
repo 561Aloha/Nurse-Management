@@ -20,7 +20,6 @@ public class Shift implements Serializable{
     private int shiftID;
     private boolean isDay;
     private String hospital;
-    private int nurseID;
     private Date shiftDate = new Date();
     
     public Shift(int shiftID, boolean isDay, String hospital, Date shiftDate)
@@ -29,7 +28,6 @@ public class Shift implements Serializable{
         this.isDay = isDay;
         this.hospital = hospital.toLowerCase();
         this.shiftDate = shiftDate;
-        this.nurseID = 0;
         
         try {
             this.serializeShift(Integer.toString(this.shiftID));
@@ -54,37 +52,12 @@ public class Shift implements Serializable{
         return hospital;
     }
     
-    public int getNurseID()
-    {
-        return nurseID;
-    }
-    
-    public void assignNurseID(int nurseID)
-    {
-        this.nurseID = nurseID;
-    }
-    
+
     public Date getShiftDate()
     {
         return shiftDate;
     }
     
-    @Override
-    public String toString()
-    {
-        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-        String type="";
-        if(isDay==true)
-        {
-            type = "Day";
-        }
-        else
-        {
-            type="Night";
-        }
-        
-        return Integer.toString(getShiftID()) + " " + type + " " + getHospital() + " " + " " + formatter.format(getShiftDate());
-    }
     
     public void serializeShift(String filename) throws IOException {
     

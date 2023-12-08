@@ -4,8 +4,12 @@
  */
 package project;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static project.AppSystem.removeShiftFile;
 
 /**
  *
@@ -14,6 +18,7 @@ import java.util.Date;
 public class ShiftManager 
 {
     private Date date = new Date();
+    AppSystem appsys = AppSystem.getInstance();
     
     public ShiftManager()
     {
@@ -25,24 +30,16 @@ public class ShiftManager
         availableShifts.add(shift);
     }
     
-   /* public void reserveShift(ArrayList<Shift> availableShifts, Nurse currentNurse, Shift shift)
-    {
-        for (Shift availableShift : availableShifts) 
-        {
-            if(availableShift.getShiftID() == shift.getShiftID())
-            {
-                availableShifts.remove(availableShift);
-                currentNurse.reserveShift(shift);
-            }
-        }
-        
-        
-    }*/
     
     public void reserveShift( Shift shift)
     {
 
-        AppSystem.getCurrentNurse().reserveShift(shift);
+        Nurse currentNurse = appsys.getCurrentNurse();
+        appsys.removeNurseFile(currentNurse);
+        currentNurse.reserveShift(shift);
+        appsys.setCurrentID(currentNurse.getID());
+        appsys.removeShiftFile(shift);
+        
        
 
     }
@@ -50,8 +47,9 @@ public class ShiftManager
     public void cancelReservation(Shift shift)
     {
         
-        AppSystem.getCurrentNurse().cancelShift(shift);
+        appsys.getCurrentNurse().cancelShift(shift);
     }
+    
     
     
     public void deleteShift(ArrayList<Shift> availableShifts, int shiftID)
@@ -74,6 +72,27 @@ public class ShiftManager
                 availableShifts.remove(availableShift);
             }
         }
+    }
+    
+    public void recreateShift(ArrayList<Shift> availableShifts, Shift shift)
+    {
+        availableShifts.add(shift);
+        try {
+            shift.serializeShift(Integer.toString(shift.getShiftID()));
+        } catch (IOException ex) {
+            Logger.getLogger(ShiftManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void addShift(Shift shift) 
+    {
+        appsys.getAvailableShifts().add(shift);
+    }
+    
+    public void removeShift(Shift shift)
+    {
+        appsys.getAvailableShifts().remove(shift);
+        removeShiftFile(shift);
     }
     
 }

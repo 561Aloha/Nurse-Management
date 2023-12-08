@@ -6,31 +6,37 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- *
+ * Class that organizes all the components of the admin shifts frame and contains 
+ * the filter and sort panels. Class also provides an accessor method to the frame 
+ * which will enable the viewmanager class to attach the correct action listeners 
  * @author Romari
  */
 public class AShiftsFrame {
+    AppSystem appsys = AppSystem.getInstance();
     private JFrame frame = new JFrame("Available Shifts"); 
     private JButton homeBtn = new JButton("Home");
     private JButton logoutBtn = new JButton("Logout");
     private JButton removeBtn = new JButton("Remove Shift");
-    private ArrayList<Shift> shiftsList = AppSystem.getShiftList();
-    Filter filter = new Filter(shiftsList);
-    Sort sort = new Sort();
+    private ArrayList<Shift> shiftsList = appsys.getAvailableShifts();
+    private Filter filter = new Filter(shiftsList);
+    private Sort sort = new Sort();
     
-    
+    /**
+     * constructor method that adds the panels and buttons and populates the frame.
+     * The class attaches action listeners to the buttons using the viewmanager class
+     */
     public AShiftsFrame()
     {
         JLabel heading = new JLabel("eNurse");
         heading.setFont(new Font("Poppins", Font.BOLD, 20));
         JLabel subheading = new JLabel("Admin Shifts Frame");
         subheading.setFont(new Font("Poppins", Font.ITALIC, 10));
-        
-        
-      
+       
 
         // Creating a subpanel for horizontal buttons on the right
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -79,6 +85,41 @@ public class AShiftsFrame {
         frame.setSize(1000, 800); // Adjust the size as needed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //////frame.setVisible(true);
+        
+        
+        ViewManager viewmanager = ViewManager.getInstance();
+        AppSystem appsys = AppSystem.getInstance();
+        
+        //logout button action listener
+        viewmanager.attachListener(logoutBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    frame.dispose();
+                    viewmanager.refreshLoginFrame();
+                    viewmanager.setVisibility(viewmanager.getLoginFrame().getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //home button action listener
+        viewmanager.attachListener(homeBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    viewmanager.setVisibility(viewmanager.getADashboardFrame().getFrame(), true);
+                         
+                }
+            }
+        );
     }
     
     public JFrame getFrame()
@@ -86,20 +127,7 @@ public class AShiftsFrame {
         return frame;
     }
     
-    public JButton getLogoutBtn()
-    {
-        return logoutBtn;
-    }
-    
-    public JButton getHomeBtn()
-    {
-        return homeBtn;
-    }
-    
-    public JButton getRemoveBtn()
-    {
-        return removeBtn;
-    }
+
     
     private class Schedule 
     {
@@ -156,10 +184,12 @@ public class AShiftsFrame {
             {
                 Shift shift = (Shift) value;
 
-                JPanel panel = new JPanel(new GridLayout(3, 2, CELL_PADDING, CELL_PADDING));
+                JPanel panel = new JPanel(new GridLayout(4, 2, CELL_PADDING, CELL_PADDING));
                 panel.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
                  //The Details of the panel                                           
                 
+                panel.add(createLabel("Shift ID:"));
+                panel.add(createLabel(Integer.toString(shift.getShiftID())));
                 panel.add(createLabel("Date:"));
                 panel.add(createLabel(shift.getShiftDateString()));
                 panel.add(createLabel("Time:"));
@@ -185,7 +215,7 @@ public class AShiftsFrame {
         }
         private void displayShifts() 
         {        
-            var shifts = AppSystem.getShiftList();
+            var shifts = appsys.getAvailableShifts();
             System.out.println("here");
             ShiftCollection shiftCollection = new ShiftCollection(shifts);
 
@@ -202,22 +232,25 @@ public class AShiftsFrame {
             if (selectedIndex != -1) 
             {
                 Shift selectedShift = listModel.get(selectedIndex);
-                AppSystem.removeShift(selectedShift); // Implement this method in NurseManager
+                ShiftManager shiftManager = new ShiftManager();
+                shiftManager.removeShift(selectedShift); // Implement this method in NurseManager
                 listModel.remove(selectedIndex);
             }
         }
+        
+        
         
         private void filterShifts()
         {
             listModel.clear();
             
-            var shifts = AppSystem.getShiftList();
+            var shifts = appsys.getAvailableShifts();
             
             
             if(filter.getNoneBtn().isSelected())
             {
                 System.out.println("radio button none");
-                shifts = AppSystem.getShiftList();
+                shifts = appsys.getAvailableShifts();
             }
             else if(filter.getABtn().isSelected())
             {
@@ -266,7 +299,7 @@ public class AShiftsFrame {
         {
             listModel.clear();
             
-            var shifts = AppSystem.getShiftList();
+            var shifts = appsys.getAvailableShifts();
             
             if(sort.getHospitalOpt().isSelected())
             {

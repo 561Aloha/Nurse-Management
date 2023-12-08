@@ -6,6 +6,9 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
 
 
 /**
@@ -47,7 +50,6 @@ public class ShiftCreationFrame {
         heading.setBounds(75, 50, 300, 30);
 
         // Creating JButton
-        /////JButton loginBtn = new JButton("Login");
         createShiftBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
         createShiftBtn.setBounds(50, 325, 200, 30);
         frame.add(createShiftBtn);
@@ -133,12 +135,71 @@ public class ShiftCreationFrame {
          * in this example (like FlowLayout,BoxLayout.etc)
          */
         frame.setLayout(null);
-        
-        //frame.setVisible(true);
+       
 
         //This method sets the width and height of the frame
         frame.setSize(400, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        
+        ViewManager viewmanager = ViewManager.getInstance();
+        AppSystem appsys = AppSystem.getInstance();
+        ShiftManager shiftmanager = new ShiftManager();
+        
+        //go back button action listener
+        viewmanager.attachListener(noChangesBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    viewmanager.setVisibility(viewmanager.getADashboardFrame().getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //create shift button action listener
+        viewmanager.attachListener(createShiftBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    
+                    Integer ID = Integer.valueOf(id.getText());
+                    
+                    boolean isday = true;
+                    String Type = type.getText().toLowerCase();
+                    if(Type.equals("night"))
+                    {
+                        isday = false;
+                    }
+                    
+                    String hosp = hospital.getText().toLowerCase();
+                    
+                    Integer D = Integer.valueOf(dateD.getText());
+                    Integer M = Integer.valueOf(dateM.getText());
+                    Integer Y = Integer.valueOf(dateY.getText());
+                    Date date = new Date(Y-1900,M-1,D);
+                    
+                    
+                    
+                    shiftmanager.createShift(appsys.getAvailableShifts(), new Shift(ID,isday,hosp,date));
+                    JOptionPane.showMessageDialog(frame, "Shift successfully created.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    viewmanager.setVisibility(frame, false);
+                    frame.dispose();
+                    viewmanager.refreshADashboardFrame();
+                    viewmanager.setVisibility(viewmanager.getADashboardFrame().getFrame(), true);
+                    
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
     }
     
     public JFrame getFrame()
@@ -146,43 +207,4 @@ public class ShiftCreationFrame {
         return frame;
     }
     
-     public JButton getCreateShiftBtn()
-    {
-        return createShiftBtn ;
-    }
-
-    public JTextField getID()
-    {
-        return id;
-    }
-    
-    public JTextField getType()
-    {
-        return type;
-    }
-    
-    public JTextField getHospital()
-    {
-        return hospital;
-    }
-    
-    public JTextField getDateD()
-    {
-        return dateD;
-    }
-    
-    public JTextField getDateM()
-    {
-        return dateM;
-    }
-    
-    public JTextField getDateY()
-    {
-        return dateY;
-    }
-    
-    public JButton getNoChangesBtn()
-    {
-        return noChangesBtn;
-    }
 }

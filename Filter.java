@@ -5,8 +5,6 @@
 package project;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -14,8 +12,6 @@ import java.util.ArrayList;
  * @author Romari
  */
 public class Filter extends JPanel{
-    
-    
     
     private ArrayList<Shift> shifts; // Assuming you have a list of shifts
     private JRadioButton noneBtn = new JRadioButton("none");
@@ -53,8 +49,6 @@ public class Filter extends JPanel{
         this.add(dayBtn);
         this.add(nightBtn);
         this.add(submitButton);
-
-
     }
     
     
@@ -97,7 +91,6 @@ public class Filter extends JPanel{
     }
    
  
-    
      public ArrayList<Shift> filterShiftsByHospital(int hospital) {
         return filterShiftsByHospital(shifts, hospital);
     }

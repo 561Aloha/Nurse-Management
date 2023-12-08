@@ -87,12 +87,6 @@ public class Sort extends JPanel {
     
     public void sortCollection(ArrayList<Shift> shifts, Comparator<Shift> comp)
     {
-        //ArrayList<Shift> sortedShifts = new ArrayList<>();
-        //for(Shift shift: shifts)
-        //{
-            //sortedShifts.add(shift);
-        //}
-        
         Collections.sort(shifts, comp);
     }
     

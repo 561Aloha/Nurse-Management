@@ -6,6 +6,8 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -20,18 +22,15 @@ public class LoginFrame {
     
     public LoginFrame()
     {
-        //Creating instance of JFrame
      
         //Creating JLabel
         JLabel l1 = new JLabel("ID");
         JLabel l2 = new JLabel("Password");
 
-        //Creating JTextField
-        ////JTextField name = new JTextField(10);
+  
         l1.setLabelFor(name);
 
         //Creating JPasswordField
-        /////JPasswordField password = new JPasswordField(10);
         l2.setLabelFor(password);
         // Creating JLabel for the heading
         JLabel heading = new JLabel("Welcome to eNurse");
@@ -42,12 +41,9 @@ public class LoginFrame {
         subheading.setFont(new Font("Poppins", Font.ITALIC, 10));
         subheading.setBounds(100, 70, 300, 30);
 
-        // CREATING THE BUTTONS
-        //JPanel buttonPanel = new JPanel();
-           //buttonPanel.setLayout(new FlowLayout());
+  
 
         // Creating JButton
-        /////JButton loginBtn = new JButton("Login");
         loginBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
         loginBtn.setBounds(100, 200, 100, 30);
         frame.add(loginBtn);
@@ -87,10 +83,6 @@ public class LoginFrame {
         frame.add(heading);   
         frame.add(subheading);
 
-        /* layout set to null ->
-         * as no layout managers used
-         * in this example (like FlowLayout,BoxLayout.etc)
-         */
         frame.setLayout(null);
 
         //sets the frame visibility to true
@@ -99,22 +91,51 @@ public class LoginFrame {
         //This method sets the width and height of the frame
         frame.setSize(400, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        ViewManager viewmanager = ViewManager.getInstance();
+        AppSystem appsys = AppSystem.getInstance();
+        
+        viewmanager.attachListener(loginBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    String id = name.getText();
+                    String pass = password.getText();
+                
+                    if (appsys.verifyLogin(Integer.parseInt(id), pass)==true)
+                    {
+                                            
+                        viewmanager.setVisibility(frame, false);
+                        frame.dispose();
+                        
+                        if(Integer.parseInt(id) == appsys.getAdminID())
+                        {
+                            viewmanager.refreshADashboardFrame();
+                            viewmanager.setVisibility(viewmanager.getADashboardFrame().getFrame(), true);
+                        }
+                        else
+                        {
+                            viewmanager.refreshNDashboardFrame();
+                            viewmanager.setVisibility(viewmanager.getNDashboardFrame().getFrame(), true);
+                        }
+                        
+                        name.setText("");
+                        password.setText("");
+                        
+                    }       
+                    else {
+                       JOptionPane.showMessageDialog(frame, "Invalid ID or Password. Please try again.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                       name.setText("");
+                       password.setText("");
+                    }
+                }
+            }
+        );
+        
     }
     
-    public JButton getBtn()
-    {
-        return loginBtn;
-    }
-    
-    public JTextField getJtxtField()
-    {
-        return name;
-    }
-    
-    public JPasswordField getPassField()
-    {
-        return password;
-    }
     
     public JFrame getFrame()
     {

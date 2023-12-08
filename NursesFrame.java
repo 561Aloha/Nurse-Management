@@ -6,6 +6,8 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -23,6 +25,7 @@ import javax.swing.JFrame;
  * @author Romari
  */
 public class NursesFrame {
+    AppSystem appsys = AppSystem.getInstance();
     private JFrame frame = new JFrame("Nurses"); 
     private JButton homeBtn = new JButton("Home");
     private JButton logoutBtn = new JButton("Logout");
@@ -31,11 +34,9 @@ public class NursesFrame {
     
     private DefaultListModel<Nurse> nurseListModel = new DefaultListModel<>();
     private JList<Nurse> nurseList = new JList<>(nurseListModel);
-    //ArrayList<Nurse> nurses = new ArrayList<>();
     
     public NursesFrame()
     {
-        ////this.nurses = nurses;
         
         JLabel heading = new JLabel("eNurse");
         heading.setFont(new Font("Poppins", Font.BOLD, 20));
@@ -78,6 +79,7 @@ public class NursesFrame {
         });
         
         
+        
         /////deleteShiftsBtn.addActionListener(e -> deleteSelectedNurse());
         JPanel deleteButtonPanel = new JPanel();
         deleteButtonPanel.add(deleteShiftsBtn);
@@ -93,6 +95,54 @@ public class NursesFrame {
 
         frame.setSize(800, 800); // Adjust the size as needed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        ViewManager viewmanager = ViewManager.getInstance();
+        AppSystem appsys = AppSystem.getInstance();
+        
+        //logout button action listener
+        viewmanager.attachListener(logoutBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    frame.dispose();
+                    viewmanager.refreshLoginFrame();
+                    viewmanager.setVisibility(viewmanager.getLoginFrame().getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
+        
+        //home button action listener
+        viewmanager.attachListener(homeBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    frame.dispose();
+                    viewmanager.setVisibility(frame, false);
+                    viewmanager.refreshADashboardFrame();
+                    viewmanager.setVisibility(viewmanager.getADashboardFrame().getFrame(), true);
+                }
+            }
+        );
+        
+        //remove nurse action listener 
+        viewmanager.attachListener(deleteShiftsBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.getNursesFrame().deleteSelectedNurse();
+                }
+            }
+        );
+        
     }
     
     public JFrame getFrame()
@@ -100,23 +150,9 @@ public class NursesFrame {
         return frame;
     }
     
-    public JButton getLogoutBtn()
-    {
-        return logoutBtn;
-    }
-    
-    public JButton getHomeBtn()
-    {
-        return homeBtn;
-    }
-    
-    public JButton getDeleteShiftsBtn()
-    {
-        return deleteShiftsBtn;
-    }
     
     private void displayNurses() {        
-        var nurses = AppSystem.getNurseList();
+        var nurses = appsys.getNurseList();
         NurseCollection nurseCollection = new NurseCollection(nurses);
 
         NurseIterator nurseIterator =nurseCollection.createIterator();
@@ -127,12 +163,13 @@ public class NursesFrame {
     }
     
      //Delete Selected Nurses
-    public void deleteSelectedNurse() {
+    private void deleteSelectedNurse() {
         int selectedIndex = nurseList.getSelectedIndex();
         if (selectedIndex != -1) {
             Nurse selectedNurse = nurseListModel.get(selectedIndex);
-            AppSystem.removeNurseFile(selectedNurse); // Implement this method in NurseManager
+            appsys.removeNurseFile(selectedNurse); // Implement this method in NurseManager
             nurseListModel.remove(selectedIndex);
+            appsys.deleteNurse(selectedNurse.getID());
     }
     }
 }

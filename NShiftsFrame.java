@@ -6,6 +6,8 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -13,13 +15,14 @@ import java.util.ArrayList;
  * @author Romari
  */
 public class NShiftsFrame {
+    AppSystem appsys = AppSystem.getInstance();
     private JFrame frame = new JFrame("Available Shifts"); 
     private JButton homeBtn = new JButton("Home");
     private JButton logoutBtn = new JButton("Logout");
     private JButton reserveShiftsBtn = new JButton("Reserve Shift");
-    private ArrayList<Shift> shiftsList = AppSystem.getShiftList();
-    Filter filter = new Filter(shiftsList);
-    Sort sort = new Sort();
+    private ArrayList<Shift> shiftsList = appsys.getAvailableShifts();
+    private Filter filter = new Filter(shiftsList);
+    private Sort sort = new Sort();
     
     public NShiftsFrame()
     {
@@ -56,7 +59,7 @@ public class NShiftsFrame {
         frame.add(headerPanel);
 
 
-            // Second Layer
+        // Second Layer
         JPanel meepPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout.CENTER for center alignment
 
         JLabel subheading2 = new JLabel("Welcome");
@@ -68,12 +71,6 @@ public class NShiftsFrame {
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
         frame.add(meepPanel);
         
-        ///frame.setVisible(true);
-        // This method sets the width and height of the frame
-        ////frame.setSize(1000, 800); //
-        
-        
-        ////frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         Schedule schedule = new Schedule();
         schedule.createScheduleFrame(frame.getContentPane());   
@@ -81,6 +78,40 @@ public class NShiftsFrame {
 
         frame.setSize(1000, 800); // Adjust the size as needed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        ViewManager viewmanager = ViewManager.getInstance();
+        AppSystem appsys = AppSystem.getInstance();
+        
+        //logout button action listener
+        viewmanager.attachListener(logoutBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    frame.dispose();
+                    viewmanager.refreshLoginFrame();
+                    viewmanager.setVisibility(viewmanager.getLoginFrame().getFrame(), true);
+                    appsys.setCurrentID(0);           
+                }
+            }
+        );
+        
+        //home button action listener
+        viewmanager.attachListener(homeBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    frame.dispose();
+                    viewmanager.refreshNDashboardFrame();
+                    viewmanager.setVisibility(viewmanager.getNDashboardFrame().getFrame(), true); 
+                }
+            }
+        );
     }
     
     public JFrame getFrame()
@@ -88,15 +119,6 @@ public class NShiftsFrame {
         return frame;
     }
     
-    public JButton getLogoutBtn()
-    {
-        return logoutBtn;
-    }
-    
-    public JButton getHomeBtn()
-    {
-        return homeBtn;
-    }
     
     private class Schedule 
     {
@@ -104,8 +126,6 @@ public class NShiftsFrame {
         JList<Shift> jList = new JList<>(listModel);    
 
         public void createScheduleFrame(Container container) {
-            // Create an ArrayList to store data
-            //ArrayList<Shift> dataList = new ArrayList<>();
             
             displayShifts();
             
@@ -121,14 +141,7 @@ public class NShiftsFrame {
             
             filter.getSubmitBtn().addActionListener(e -> filterShifts());
             
-            sort.getSubmitBtn().addActionListener(e -> sortShifts());
-            
-            ///ArrayList<Shift> shiftsList = (ArrayList<Shift>) AppSystem.getAvailableShifts();
-            
-            
-            
-            //Sort_D sortPanel = new Sort_D(shiftsList);
-            
+            sort.getSubmitBtn().addActionListener(e -> sortShifts());   
 
             JPanel westPanel = new JPanel();
             westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
@@ -161,10 +174,12 @@ public class NShiftsFrame {
             {
                 Shift shift = (Shift) value;
 
-                JPanel panel = new JPanel(new GridLayout(3, 2, CELL_PADDING, CELL_PADDING));
+                JPanel panel = new JPanel(new GridLayout(4, 2, CELL_PADDING, CELL_PADDING));
                 panel.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
                  //The Details of the panel                                           
                 
+                panel.add(createLabel("Shift ID:"));
+                panel.add(createLabel(Integer.toString(shift.getShiftID())));
                 panel.add(createLabel("Date:"));
                 panel.add(createLabel(shift.getShiftDateString()));
                 panel.add(createLabel("Time:"));
@@ -172,8 +187,6 @@ public class NShiftsFrame {
                 panel.add(createLabel("Hospital:"));
                 panel.add(createLabel(shift.getHospital()));
                 
-                //panel.add(createLabel("Shift:"));
-                //panel.add(createLabel(shift.toString()));
 
                 //The Border around the Panel
                 panel.setBorder(BorderFactory.createCompoundBorder(
@@ -192,7 +205,7 @@ public class NShiftsFrame {
         }
         private void displayShifts() 
         {        
-            var shifts = AppSystem.getShiftList();
+            var shifts = appsys.getAvailableShifts();
             System.out.println("here");
             ShiftCollection shiftCollection = new ShiftCollection(shifts);
 
@@ -218,25 +231,19 @@ public class NShiftsFrame {
                 
             }
             
-            //ScheduleFrame.Schedule obj = new ScheduleFrame().new Schedule();
-            //obj.displayShifts();
-            
-            //ScheduleFrame scheduleframe = new ScheduleFrame();
-            //scheduleframe.getFrame().setVisible(true);
-            //getFrame().setVisible(false);
         }
         
         private void filterShifts()
         {
             listModel.clear();
             
-            var shifts = AppSystem.getShiftList();
+            var shifts = appsys.getAvailableShifts();
             
             
             if(filter.getNoneBtn().isSelected())
             {
                 System.out.println("radio button none");
-                shifts = AppSystem.getShiftList();
+                shifts = appsys.getAvailableShifts();
             }
             else if(filter.getABtn().isSelected())
             {
@@ -284,7 +291,7 @@ public class NShiftsFrame {
         {
             listModel.clear();
             
-            var shifts = AppSystem.getShiftList();
+            var shifts = appsys.getAvailableShifts();
             
             if(sort.getHospitalOpt().isSelected())
             {

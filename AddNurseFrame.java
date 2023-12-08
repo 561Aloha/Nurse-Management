@@ -6,6 +6,8 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -28,13 +30,10 @@ public class AddNurseFrame {
         JLabel l3 = new JLabel("Password");
 
         //Creating JTextField
-        ////JTextField name = new JTextField(10);
         l1.setLabelFor(id);
         
         l2.setLabelFor(name);
         
-        //Creating JPasswordField
-        /////JPasswordField password = new JPasswordField(10);
         l3.setLabelFor(password);
         
         // Creating JLabel for the heading
@@ -43,7 +42,6 @@ public class AddNurseFrame {
         heading.setBounds(75, 50, 300, 30);
 
         // Creating JButton
-        /////JButton loginBtn = new JButton("Login");
         addNurseBtn.setFont(new Font("Poppins", Font.ITALIC, 10));
         addNurseBtn.setBounds(50, 250, 200, 30);
         frame.add(addNurseBtn);
@@ -100,11 +98,50 @@ public class AddNurseFrame {
          */
         frame.setLayout(null);
         
-        //frame.setVisible(true);
 
         //This method sets the width and height of the frame
         frame.setSize(400, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        ViewManager viewmanager = ViewManager.getInstance();
+        AppSystem appsys = AppSystem.getInstance();
+        
+        //add nurse button action listener
+        viewmanager.attachListener(addNurseBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    String ID = id.getText();
+                    String Name = name.getText();
+                    String Password = password.getText();
+                    appsys.addNurse(Integer.parseInt(ID), Name, Password);
+                    JOptionPane.showMessageDialog(frame, "Nurse successfully added.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    viewmanager.setVisibility(frame, false);
+                    frame.dispose();
+                    viewmanager.refreshADashboardFrame();
+                    viewmanager.setVisibility(viewmanager.getADashboardFrame().getFrame(), true);                         
+                }
+            }
+        );
+        
+        //go back button action listener
+        viewmanager.attachListener(noChangesBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    frame.dispose();
+                    viewmanager.refreshADashboardFrame();
+                    viewmanager.setVisibility(viewmanager.getADashboardFrame().getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
     }
     
     public JFrame getFrame()
@@ -112,28 +149,4 @@ public class AddNurseFrame {
         return frame;
     }
     
-    public JButton getBtn()
-    {
-        return addNurseBtn;
-    }
-
-    public JTextField getID()
-    {
-        return id;
-    }
-    
-    public JTextField getName()
-    {
-        return name;
-    }
-    
-    public JPasswordField getPassword()
-    {
-        return password;
-    }
-
-    public JButton getNoChangesBtn()
-    {
-        return noChangesBtn;
-    }
 }

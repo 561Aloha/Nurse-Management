@@ -6,6 +6,8 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -27,12 +29,8 @@ public class ChangePasswordFrame {
         JLabel l1 = new JLabel("Old Password");
         JLabel l2 = new JLabel("New Password");
 
-        //Creating JTextField
-        ////JTextField name = new JTextField(10);
         l1.setLabelFor(oldpassword);
 
-        //Creating JPasswordField
-        /////JPasswordField password = new JPasswordField(10);
         l2.setLabelFor(newpassword);
         
         // Creating JLabel for the heading
@@ -107,6 +105,53 @@ public class ChangePasswordFrame {
         //This method sets the width and height of the frame
         frame.setSize(400, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        ViewManager viewmanager = ViewManager.getInstance();
+        AppSystem appsys = AppSystem.getInstance();
+        
+        //submit change button action listener
+        viewmanager.attachListener(submitChangeBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    String oldPassword = oldpassword.getText();
+                    String newPassword = newpassword.getText();
+                
+                    if (appsys.verifyOldPass(oldPassword, newPassword)==true)
+                    {
+                        JOptionPane.showMessageDialog(frame, "Password successfully changed.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        viewmanager.setVisibility(frame, false);
+                        frame.dispose();
+                        viewmanager.refreshNDashboardFrame();
+                        viewmanager.setVisibility(viewmanager.getNDashboardFrame().getFrame(), true);
+                        appsys.changePassword();
+                        
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(frame, "Invalid Password. Please try again.", "Password Change Failed", JOptionPane.ERROR_MESSAGE);
+                        oldpassword.setText("");
+                        newpassword.setText("");
+                    }
+                }
+            }
+        );
+        
+        //go back button action listener
+        viewmanager.attachListener(noChangesBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    viewmanager.setVisibility(viewmanager.getNDashboardFrame().getFrame(), true);
+                    appsys.setCurrentID(0);
+                         
+                }
+            }
+        );
     }
  
     public JFrame getFrame()
@@ -114,23 +159,4 @@ public class ChangePasswordFrame {
         return frame;
     }
     
-    public JButton getSubmitChangeBtn()
-    {
-        return submitChangeBtn;
-    }
-
-    public JPasswordField getOldPassword()
-    {
-        return oldpassword;
-    }
-
-    public JPasswordField getNewPassword()
-    {
-        return newpassword;
-    }
-    
-    public JButton getNoChangesBtn()
-    {
-        return noChangesBtn;
-    }
 }

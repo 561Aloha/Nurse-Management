@@ -6,6 +6,8 @@ package project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,16 +16,20 @@ import java.util.Date;
  * @author Romari
  */
 public class ScheduleFrame {
+    AppSystem appsys = AppSystem.getInstance();
     private JFrame frame = new JFrame("Schedule"); 
     private JButton homeBtn = new JButton("Home");
     private JButton logoutBtn = new JButton("Logout");
+    private Sort sort = new Sort();
   
-    
+    /**
+     * public constructor
+     */
     public ScheduleFrame()
     {
         JLabel heading = new JLabel("eNurse");
         heading.setFont(new Font("Poppins", Font.BOLD, 20));
-        JLabel subheading = new JLabel("Admin Shifts Frame");
+        JLabel subheading = new JLabel("Schedule Frame");
         subheading.setFont(new Font("Poppins", Font.ITALIC, 10));
         
         
@@ -66,9 +72,6 @@ public class ScheduleFrame {
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
         frame.add(meepPanel);
         
-        ///frame.setVisible(true);
-        // This method sets the width and height of the frame
-        ////frame.setSize(1000, 800); //
         
         
         ////frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,21 +82,47 @@ public class ScheduleFrame {
 
         frame.setSize(1000, 800); // Adjust the size as needed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        
+        ViewManager viewmanager = ViewManager.getInstance();
+        AppSystem appsys = AppSystem.getInstance();
+        
+        //logout button action listener
+        viewmanager.attachListener(logoutBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    frame.dispose();
+                    viewmanager.refreshLoginFrame();
+                    viewmanager.setVisibility(viewmanager.getLoginFrame().getFrame(), true);
+                    appsys.setCurrentID(0);
+
+                }
+            }
+        );
+
+        //home button action listener
+        viewmanager.attachListener(homeBtn, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent event)
+                {
+                    viewmanager.setVisibility(frame, false);
+                    frame.dispose();
+                    viewmanager.refreshNDashboardFrame();
+                    viewmanager.setVisibility(viewmanager.getNDashboardFrame().getFrame(), true);
+                }
+            }
+        );
     }
     
     public JFrame getFrame()
     {
         return frame;
-    }
-    
-    public JButton getLogoutBtn()
-    {
-        return logoutBtn;
-    }
-    
-    public JButton getHomeBtn()
-    {
-        return homeBtn;
     }
     
     public class Schedule 
@@ -117,17 +146,12 @@ public class ScheduleFrame {
             JButton removeButton = new JButton("Remove Shift");
             removeButton.addActionListener(e -> deleteSelectedShift());
                    
-            ArrayList<Shift> shiftsList = (ArrayList<Shift>) AppSystem.getAvailableShifts();
+            ArrayList<Shift> shiftsList = (ArrayList<Shift>) appsys.getAvailableShifts();
             
-            
-            
-            Filter filter = new Filter(shiftsList);
-            //Sort_D sortPanel = new Sort_D(shiftsList);
             
 
             JPanel westPanel = new JPanel();
             westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
-            westPanel.add(filter);
             //westPanel.add(sortPanel);
 
             JPanel eastPanel = new JPanel();
@@ -156,19 +180,19 @@ public class ScheduleFrame {
             {
                 Shift shift = (Shift) value;
 
-                JPanel panel = new JPanel(new GridLayout(3, 2, CELL_PADDING, CELL_PADDING));
+                JPanel panel = new JPanel(new GridLayout(4, 2, CELL_PADDING, CELL_PADDING));
                 panel.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
                  //The Details of the panel                                           
                 
+                panel.add(createLabel("Shift ID:"));
+                panel.add(createLabel(Integer.toString(shift.getShiftID())));
                 panel.add(createLabel("Date:"));
                 panel.add(createLabel(shift.getShiftDateString()));
                 panel.add(createLabel("Time:"));
                 panel.add(createLabel(shift.getTimeString()));
                 panel.add(createLabel("Hospital:"));
                 panel.add(createLabel(shift.getHospital()));
-                
-                //panel.add(createLabel("Shift:"));
-                //panel.add(createLabel(shift.toString()));
+               
 
                 //The Border around the Panel
                 panel.setBorder(BorderFactory.createCompoundBorder(
@@ -186,13 +210,13 @@ public class ScheduleFrame {
             }
         }
         public void displayShifts() 
-        {        
-            var shifts = AppSystem.getCurrentNurse().getNurseSchedule();
-            System.out.print((shifts.getClass()));
-            /////var shifts = AATESTsched.getNurseSchedule();
+        {   
+   
+            var shifts = appsys.getCurrentNurse().getNurseSchedule();
+            
+            sort.sortCollection(shifts, sort.getCompByShiftDate());
             
             
-            System.out.println("here");
             ShiftCollection shiftCollection = new ShiftCollection(shifts);
 
             ShiftIterator shiftIterator =shiftCollection.createIterator();
@@ -218,10 +242,13 @@ public class ScheduleFrame {
             {
                 Shift selectedShift = listModel.get(selectedIndex);
                 ShiftManager shiftManager = new ShiftManager();
-                shiftManager.createShift(AppSystem.getAvailableShifts(), selectedShift); // Implement this method in NurseManager
+                shiftManager.recreateShift(appsys.getAvailableShifts(), selectedShift); // Implement this method in NurseManager
                 listModel.remove(selectedIndex);
                 shiftManager.cancelReservation(selectedShift);
+                
             }
         }
+        
+         
     }
 }

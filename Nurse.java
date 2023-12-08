@@ -16,13 +16,16 @@ import java.io.Serializable;
  * @author Romari
  */
 public class Nurse extends User implements Serializable{
-    private static ArrayList<Shift> nurseSchedule = new ArrayList<>();
-    private Boolean serialized; 
+    private  ArrayList<Shift> nurseSchedule = new ArrayList<>();
+    private boolean serialized; 
     
     public Nurse(int nurseID, String name, String password)
     {
+        
         super(nurseID, name, password);
-         try {
+       
+        
+        try {
             this.serializeNurse(Integer.toString(getID()));
         } catch (IOException e) {
             // Handle exception or propagate it
@@ -30,9 +33,9 @@ public class Nurse extends User implements Serializable{
         }
     }
     
-    public static ArrayList<Shift> getNurseSchedule()
+    public ArrayList<Shift> getNurseSchedule()
     {
-        return nurseSchedule;
+        return this.nurseSchedule;
     }
     
     public void changePassword(String newPassword)
@@ -43,11 +46,28 @@ public class Nurse extends User implements Serializable{
     public void reserveShift(Shift shift)
     {
         this.nurseSchedule.add(shift);
+        try {
+            this.serializeNurse(Integer.toString(getID()));
+            System.out.println("After reserve Shift");
+        } catch (IOException e) {
+            // Handle exception or propagate it
+            System.err.println("Serialization failed: " + e.getMessage());
+        }
+        AppSystem appsys = AppSystem.getInstance();
+        appsys.addNurse(this);
     }
     
     public void cancelShift(Shift shift)
     {
         this.nurseSchedule.remove(shift);
+        try {
+            this.serializeNurse(Integer.toString(getID()));
+            System.out.println("After reserve Shift");
+        } catch (IOException e) {
+            // Handle exception or propagate it
+            System.err.println("Serialization failed: " + e.getMessage());
+        }
+       
     }
     
     @Override
@@ -57,7 +77,7 @@ public class Nurse extends User implements Serializable{
     }
     
     public void serializeNurse(String filename) throws IOException {
-    
+ 
         File directory = new File("nurses");
         if (!directory.exists()) {
             directory.mkdirs(); // Create the folder if it doesn't exist

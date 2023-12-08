@@ -64,7 +64,7 @@ public abstract class DashboardFrame {
         return menu;
     }
     
-    public abstract void addMenuItems(JPanel menu);
+    protected abstract void addMenuItems(JPanel menu);
     
     public JFrame getFrame()
     {
