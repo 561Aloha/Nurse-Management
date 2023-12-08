@@ -1,3 +1,15 @@
+Running the program: 
+Open the source file from project-name\src and unzip. Open the project in github. 
+For logins: 
+  -admin: 
+    -username: 1000
+    -password: admin 
+  -nurse: 
+    -username: 1007
+    -nurse7
+*make sure the main that is being built is the project.NurseApp
+    
+
 Nurse Management App Overview:
 
 
